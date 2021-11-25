@@ -1,6 +1,6 @@
 {
-  "name": "active-blicket-comp",
-  "version": "2.0.0-mturk",
+  "name": "uncertain-teaching",
+  "version": "0.x.x",
   "private": true,
   "scripts": {
     "build": "rollup -c && grunt",

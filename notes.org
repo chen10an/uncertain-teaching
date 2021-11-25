@@ -1,10 +1,12 @@
 * Notes
-** Current versions:
-- for release :: 2.0.0-mturk-micro
-- for somata :: 2.0.x-mturk-micro
-** Things to update when making a new version of the experiment
-- ~package.json~ version
-- ~package-lock.json~ version (top level active-blicket-comp version only)
+** Managing versions (an ideal method; may not be implemented exactly like this)
+New branch (named <MAJOR>.x.x) --> increment major version
+New somata config (named <MAJOR>.<MINOR>.x) --> increment minor version
+Meaningful updates that share a somata config (named <MAJOR>.<MINOR>.<PATCH>) --> increment patch version
+
+** Things to update when making a new major version (i.e., a new branch) of the experiment
+- ~package.json~ version (major version only)
+- ~package-lock.json~ version (major version only)
 - ~App.svelte~ experiment_id prop for each route
   - which takes care of experiment_id for sending messages to somata in ~ExperimentController.svelte~
 - also make sure a somata config exists for this version
