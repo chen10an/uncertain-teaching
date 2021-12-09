@@ -186,3 +186,16 @@ textarea {
     width: 70%;
     height: 3rem;
 }
+
+/* A nestable "unit" of a rule expression */
+.rule-unit {
+    border-radius: var(--container-border-radius);
+    box-shadow: 0px 0px 1px 1px var(--medium-gray);
+    margin: 0.3rem;
+    padding: 0.3rem;
+    width: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

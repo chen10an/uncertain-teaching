@@ -18,6 +18,7 @@
     import { FADE_DURATION_MS, FADE_IN_DELAY_MS, bonus_currency_str, make_dummy_blicket, make_dummy_nonblicket, intro_incorrect_clicks, MAX_NUM_BLOCKS, duration_str, feedback, quiz_data_dict } from '../../modules/experiment_stores.js';
     import TwoPilesAndDetector from '../partials/TwoPilesAndDetector.svelte';
     import TeachingValidation from '../partials/TeachingValidation.svelte';
+    import ForcedChoiceDNFRule from '../partials/ForcedChoiceDNFRule.svelte';
 
     import { roundMoney } from '../../modules/utilities.js';
     import { tooltip } from '../../modules/tooltip.js';
@@ -34,7 +35,7 @@
     let show_feedback = false;  // whether to show feedback on the current page
     
     // Comprehension checks and captchas
-    let page_dex = -2;  // multipage checks
+    let page_dex = 0;  // multipage checks
     let all_correct = false;  // whether all understanding/captcha questions are correct on the current page
     let passed_captcha = false;  // bind to CoolWarmCaptcha
     intro_incorrect_clicks.update(dict => {
@@ -140,13 +141,16 @@
     <div>
         <p style="color: red;"><b>Please do NOT reload the page. You will be unable to complete the study.</b></p>
         
-        <p>Welcome to our research study! We're interested in understanding how you would teach others about our "blicket machines" and we hope that you have fun in the process.</p>
+        <p>Welcome to our research study! We're interested in understanding how you learn about "blicket machines" from a teacher, and we hope that you have fun in the process.</p>
 
         <h3>Overview</h3>
         <ul>
-            <li>Our study lasts around {$duration_str} in total. You will be introduced to {ordered_fform_keys.length} different "blicket machines" and asked to teach others about how each machine works.</li>
+            <li>Our study lasts around {$duration_str} in total. You will see {ordered_fform_keys.length} sets of examples, each created by a teacher who wants to teach you how a "blicket machine" works.</li>
             <!-- Notice bonus is only for length-1 questions because the last one is just "make your own rule" -->
-            <li><b>Your answers can earn a total bonus of up to {$bonus_currency_str}{roundMoney(teaching_bonus_val*(ordered_fform_keys.length-1))}.</b> Your answers are evaluated in detail by other people, so it may take some time to calculate your corresponding bonus. Your bonus will be sent within <b>{long_bonus_time}</b>.</li>
+            <li><b>Your answers can earn a total bonus of up to {$bonus_currency_str}{roundMoney(teaching_bonus_val*(ordered_fform_keys.length-1))}.</b>
+                <!-- TODO: bonus amount -->
+                <!-- Your answers are evaluated in detail by other people, so it may take some time to calculate your corresponding bonus. Your bonus will be sent within <b>{long_bonus_time}</b>. -->
+            </li>
         </ul>
         
         <h3>Blicket Machines</h3>
@@ -171,13 +175,16 @@
             </ul>
         </div>
 
-        <p>When you encounter a <b>real blicket machine</b>, it will have a <button>Test the blicket machine</button> button that shows how the machine responds to blickets and/or plain blocks: <span style="background: var(--active-color); padding: 0 0.3rem;">activating with a green color</span> or doing nothing. It doesn’t matter where blickets and/or plain blocks are placed on the machine.</p>
+        <p><b>Real blicket machines</b> will be able to respond to blickets and/or plain blocks by <span style="background: var(--active-color); padding: 0 0.3rem;">activating with a green color</span> or doing nothing. It doesn’t matter where blickets and/or plain blocks are placed on the machine.</p>
 
-        <p>This study will show you <b>{ordered_fform_keys.length} different blicket machines, each working in a different way</b>. You will be told how it works so that you can teach it to other people.</p>
+        <p>In this study, some teachers have created <b>{ordered_fform_keys.length} different sets of examples</b> to teach you how different blicket machines work: when a machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
+        <!-- will teach you how different blicket machines work (when the machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing) by showing you <b>{ordered_fform_keys.length} different sets of examples</b>. Each example set is created by a teacher, who may or may not be confident in knowing how the blicket machine works.</p> -->
 
-        <h3>Teaching Other People about How the Blicket Machine Works</h3>
-        <p>For each blicket machine you see, you will be told how it works. We then ask you to give <b>5 examples</b> to teach other people about this machine. You can make each example with this setup:</p>
+        <h3>Learning from Teachers</h3>
+        <p>In each example set, a teacher has created <b>5 examples</b> to teach you about how a blicket machine works. The teacher used this setup to create an example:</p>
 
+        <!-- <TeachingValidation bind:answered_combos="{answered_combos}" bind:answered_detector_states="{answered_detector_states}" bind:answered_participant_form="{answered_participant_form}" collection_id="{ordered_fform_keys[page_dex]}" blicket_activation="{fform_dict[ordered_fform_keys[page_dex]].blicket_activation}" machine_name="{ALPHABET[page_dex]}"  has_noise="{fform_dict[ordered_fform_keys[page_dex]].has_noise}" num_blickets="{fform_dict[ordered_fform_keys[page_dex]].num_blickets}" /> -->
+        
         <div class="col-centering-container" style="padding: 0;">
             <div class="qa">
                 <p style="margin-top: 0;"><b>Setup of an Example</b></p>
@@ -185,9 +192,9 @@
             </div>
         </div>
 
-        <p>The buttons work in the same way as before, except now <b>it is up to you</b> to choose and show others whether the blicket machine should <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response to the blickets and/or plain blocks on the machine.</p>
+        <p>The buttons work in the same way as before, except now <b>the teacher chooses</b> to show you whether the blicket machine should <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response to the blickets and/or plain blocks on the machine.</p>
         
-        <p>We will show your examples to other people after the study. They will also know which blocks are blickets (star) or not (plain) and that it doesn't matter where blocks are placed on the machine.</p>
+        <!-- <p>We will show your examples to other people after the study. They will also know which blocks are blickets (star) or not (plain) and that it doesn't matter where blocks are placed on the machine.</p> -->
 
         <p>Your bonus will be determined by whether other people learn how the blicket machine works based on your examples (up to {$bonus_currency_str}{roundMoney(teaching_bonus_val)} per blicket machine
             <span class="info-box" title="Given your examples, two other people will choose from 8 options about how the blicket machine works. If one person chooses the correct option, your bonus is {$bonus_currency_str}{roundMoney(teaching_bonus_val/2)}; if both choose the correct option, your bonus is {$bonus_currency_str}{roundMoney(teaching_bonus_val)}." use:tooltip>hover/tap me for details</span>).
@@ -243,6 +250,13 @@
                     </div>
                 {/key}
 
+                <h3>Given the teacher's examples, how do you think blicket machine {ALPHABET[page_dex]} works?</h3>
+                <ForcedChoiceDNFRule/>
+                <h3>Do you think the teacher is confident about knowing how blicket machine {ALPHABET[page_dex]} works?
+    <label><input type="radio" value="{true}">Yes</label>
+    <label><input type="radio" value="{false}">No</label>
+                </h3>
+                
                 <div class="col-centering-container" style="padding: 0;">
                     <div class="button-container">
                         <!-- translate to center-->

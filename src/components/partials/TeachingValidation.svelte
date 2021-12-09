@@ -94,39 +94,40 @@
     }
 </script>
 
-<h2>Blicket Machine {machine_name}</h2>
+<h2>Teacher's Examples of Blicket Machine {machine_name}</h2>
 
 {#if is_participant_fform}
     <!-- let the participant create their own rule/form -->
-    <p>This is blicket machine {machine_name}. <b>Now is your chance to come up with how it works!</b> Blicket machine {machine_name} can work in any way, as long as it's different from the previous machines and you can teach it to others by making examples below.</p>
-    <p><i>Your responses below will not affect your bonus, but we hope you'll help us learn about what kind of blicket machine behavior you find interesting.</i></p>
+    <!-- <p>This is blicket machine {machine_name}. <b>Now is your chance to come up with how it works!</b> Blicket machine {machine_name} can work in any way, as long as it's different from the previous machines and you can teach it to others by making examples below.</p>
+         <p><i>Your responses below will not affect your bonus, but we hope you'll help us learn about what kind of blicket machine behavior you find interesting.</i></p>
 
-    <h3>How does blicket machine {machine_name} work?</h3>
-    <textarea bind:value={$quiz_data_dict[collection_id].participant_form_response}></textarea>
+         <h3>How does blicket machine {machine_name} work?</h3>
+         <textarea bind:value={$quiz_data_dict[collection_id].participant_form_response}></textarea> -->
 {:else}
-    <p>
+    <!-- <p> -->
         {#if has_noise}
-            This is blicket machine {machine_name}. It <b>usually</b> activates when
-            <b>{int_to_str[num_blickets]} blicket{num_blickets === 1 ? "" : "s"}</b>
-            <span style="display: inline-block;"><Block block={make_dummy_blicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span>
-            {num_blickets === 1 ? "is" : "are"}
-            on the machine, but it <b>always</b> activates for
-            <b>at least {int_to_str[num_blickets+1]} blicket{num_blickets+1 === 1 ? "" : "s"}</b>
-            <span style="display: inline-block;"><Block block={make_dummy_blicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span>.
+            <!-- This is blicket machine {machine_name}. It <b>usually</b> activates when
+                 <b>{int_to_str[num_blickets]} blicket{num_blickets === 1 ? "" : "s"}</b>
+                 <span style="display: inline-block;"><Block block={make_dummy_blicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span>
+                 {num_blickets === 1 ? "is" : "are"}
+                 on the machine, but it <b>always</b> activates for
+                 <b>at least {int_to_str[num_blickets+1]} blicket{num_blickets+1 === 1 ? "" : "s"}</b>
+                 <span style="display: inline-block;"><Block block={make_dummy_blicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span>. -->
         {:else}
-            This is blicket machine {machine_name}. It <b>always</b> activates when
-            <b>at least {int_to_str[num_blickets]} blicket{num_blickets === 1 ? "" : "s"}</b>
-            <span style="display: inline-block;"><Block block={make_dummy_blicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span>
-            {num_blickets === 1 ? "is" : "are"} on the machine.
+            <!-- This is blicket machine {machine_name}. It <b>always</b> activates when
+                 <b>at least {int_to_str[num_blickets]} blicket{num_blickets === 1 ? "" : "s"}</b>
+                 <span style="display: inline-block;"><Block block={make_dummy_blicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span>
+                 {num_blickets === 1 ? "is" : "are"} on the machine. -->
         {/if}
-        It doesn't matter whether there are plain (non-blicket) blocks <span style="display: inline-block;"><Block block={make_dummy_nonblicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span> on the machine. You can test blicket machine {machine_name} to confirm how it works:
-    </p>
-    
-    <TwoPilesAndDetector collection_id="{collection_id}_piles_testable" num_on_blocks_limit="{MAX_NUM_BLOCKS}" is_disabled="{false}" blicket_activation="{blicket_activation}" bind:show_positive_detector="{current_testable_detector_state}" bind:blicket_nonblicket_combo="{current_testable_combo}" bind:test_is_pressed="{current_testable_is_pressed}" />
+        <!-- It doesn't matter whether there are plain (non-blicket) blocks <span style="display: inline-block;"><Block block={make_dummy_nonblicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span> on the machine. You can test blicket machine {machine_name} to confirm how it works:
+             </p>
+        -->
+        <!-- <TwoPilesAndDetector collection_id="{collection_id}_piles_testable" num_on_blocks_limit="{MAX_NUM_BLOCKS}" is_disabled="{false}" blicket_activation="{blicket_activation}" bind:show_positive_detector="{current_testable_detector_state}" bind:blicket_nonblicket_combo="{current_testable_combo}" bind:test_is_pressed="{current_testable_is_pressed}" /> -->
 {/if}
 
-<h3>Please give 5 examples to teach other people about how blicket machine {machine_name} works: <i>When does it activate? When does it do nothing?</i></h3>
-<p>Here <b>it is up to you</b> to choose and show others whether the blicket machine should <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response to the blickets and/or plain blocks on the machine.</p>
+    <h3>A teacher has created 5 examples to teach you how blicket machine {machine_name} works:</h3>
+    <!-- <i>When does it activate? When does it do nothing?</i></h3> -->
+    <!-- <p>Here <b>it is up to you</b> to choose and show others whether the blicket machine should <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response to the blickets and/or plain blocks on the machine.</p> -->
 
 <div class="qa-container">
     {#each $quiz_data_dict[collection_id].teaching_ex as ex, i}
