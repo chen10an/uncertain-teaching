@@ -53,6 +53,14 @@ export class Branch {
         }
         this.block_num = block_num;
     }
+
+    reset () {
+        this.reliability = null;
+        this.blicket_comparator = null;
+        this.blicket_num = null;
+        this.block_comparator = null;
+        this.block_num = null;
+    }
 };
 
 export function makeRandomBranch() {

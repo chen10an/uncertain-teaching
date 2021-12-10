@@ -35,6 +35,7 @@
 
     function removeBranch(dex) {
         visibleDex.splice(visibleDex.findIndex(x => x == dex), 1);  // remove
+        orderedBranches[dex].reset();  // reset to null values so that when it gets added back it won't retain its previous select states
         visibleDex = visibleDex;  // trigger reactivity
     }
 

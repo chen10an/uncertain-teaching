@@ -98,3 +98,10 @@
      </select>
      .
      </p> --> 
+<style>
+    /* TODO: color code by whether or not the select has been filled out */
+    select {
+        background-color: var(--color5);
+        font-size: 16px;
+    }
+</style>
