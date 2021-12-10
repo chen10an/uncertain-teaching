@@ -1,14 +1,14 @@
 <script>
-    export let conj = new Conj(null, null, null, null, null); 
+    export let branch;
 
     import Block from '../partials/Block.svelte';
-    import { COMPARATORS,  NUMBERS, RELIABILITIES, Conj } from '../../modules/rule_classes.js';
+    import { COMPARATORS,  NUMBERS, RELIABILITIES } from '../../modules/rule_classes.js';
     import { make_dummy_blicket, make_dummy_nonblicket } from '../../modules/experiment_stores.js';
 </script>
 
 <div class="rule-unit">
     <span>
-        <select bind:value="{conj.reliability}">
+        <select bind:value="{branch.reliability}">
             {#each RELIABILITIES as option}
                 <option value={option.val}>
                     {option.text}
@@ -20,14 +20,14 @@
     <div class="rule-unit">
         <span>
             the number of blickets <span style="display: inline-block;"><Block block={make_dummy_blicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span> is
-            <select bind:value="{conj.blicket_comparator}">
+            <select bind:value="{branch.blicket_comparator}">
                 {#each COMPARATORS as option}
                     <option value={option.val}>
                         {option.text}
                     </option>
                 {/each}
             </select>
-            <select bind:value="{conj.blicket_num}">
+            <select bind:value="{branch.blicket_num}">
                 {#each NUMBERS as option}
                     <option value={option.val}>
                         {option.text}
@@ -42,14 +42,14 @@
     <div class="rule-unit">
         <span>
             the number of plain (non-blicket) blocks <span style="display: inline-block;"><Block block={make_dummy_nonblicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span> is
-            <select bind:value="{conj.block_comparator}">
+            <select bind:value="{branch.block_comparator}">
                 {#each COMPARATORS as option}
                     <option value={option.val}>
                         {option.text}
                     </option>
                 {/each}
             </select>
-            <select bind:value="{conj.block_num}">
+            <select bind:value="{branch.block_num}">
                 {#each NUMBERS.slice(0, -1) as option}
                     <option value={option.val}>
                         {option.text}

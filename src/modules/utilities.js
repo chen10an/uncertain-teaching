@@ -19,3 +19,7 @@ export function removePrecError(x) {
 
     return +(x).toFixed(5);   // unary + to turn string back to number to shave off unnecessary decimals
 }
+
+export function getRandomEl(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+};

@@ -1,3 +1,5 @@
+import { getRandomEl } from './utilities.js';
+
 export const COMPARATORS = [
     {val: null, text: "Please select."},
     {val: "=", text: "equal to"},
@@ -24,7 +26,7 @@ export const RELIABILITIES = [
     {val: 1, text: "always"}
 ]
 
-export class Conj {
+export class Branch {
     constructor(reliability, blicket_comparator, blicket_num, block_comparator, block_num) {
         if (!RELIABILITIES.map(x => x.val).includes(reliability)) {
             throw new Error("The reliability value is not valid.")
@@ -51,4 +53,11 @@ export class Conj {
         }
         this.block_num = block_num;
     }
-}
+};
+
+export function makeRandomBranch() {
+    let nonNullReliabilities = RELIABILITIES.slice(1, RELIABILITIES.length);
+    let nonNullComparators = COMPARATORS.slice(1, COMPARATORS.length);
+    let nonNullNumbers = NUMBERS.slice(1, NUMBERS.length);
+    return new Branch(getRandomEl(nonNullReliabilities).val, getRandomEl(nonNullComparators).val, getRandomEl(nonNullNumbers).val, getRandomEl(nonNullComparators).val, getRandomEl(nonNullNumbers).val);
+};
