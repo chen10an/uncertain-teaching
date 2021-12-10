@@ -7,12 +7,8 @@
     const FLIP_DURATION_MS = 300;
     const NUM_BRANCHES = 6
 
-    let visibleDex = [0];  // first branch is always visible
-    let visibleUpTo = Math.floor(Math.random() * NUM_BRANCHES);  // random (noninclusive) end dex for selecting which branches are visible
-    if (visibleUpTo > 0) {
-        // avoid empty array
-        visibleDex = [...Array(visibleUpTo).keys()];
-    }
+    let visibleUpTo = Math.max(Math.floor(Math.random() * NUM_BRANCHES), 1);  // random (noninclusive) end dex for selecting which branches are visible; first branch is always visible
+    let visibleDex = [...Array(visibleUpTo).keys()];
 
     // define a fixed order/index to help transitions/animations target the correct branch
     let orderedBranches = [];
@@ -23,7 +19,6 @@
             orderedBranches.push(new BranchClass(null, null, null, null, null));
         }
     }
-    orderedBranches = orderedBranches;
     
     $: hideAddButton = visibleDex.length >= NUM_BRANCHES;
     
