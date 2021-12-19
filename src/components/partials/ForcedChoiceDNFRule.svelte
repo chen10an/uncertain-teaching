@@ -1,29 +1,45 @@
 <script>
+    export let is_done;
+    
     import Branch from './Branch.svelte';
     import { Branch as BranchClass, makeRandomBranch } from '../../modules/rule_classes.js';
     import { flip } from 'svelte/animate';
     import { receive, send } from '../../modules/crossfade.js';
 
     const FLIP_DURATION_MS = 300;
-    const NUM_BRANCHES = 6
+    const MAX_NUM_BRANCHES = 5;
 
-    let visibleUpTo = Math.max(Math.floor(Math.random() * NUM_BRANCHES), 1);  // random (noninclusive) end dex for selecting which branches are visible; first branch is always visible
+    let visibleUpTo = Math.max(Math.floor(Math.random() * MAX_NUM_BRANCHES), 1);  // random (noninclusive) end dex for selecting which branches are visible; first branch is always visible
     let visibleDex = [...Array(visibleUpTo).keys()];
 
     // define a fixed order/index to help transitions/animations target the correct branch
     let orderedBranches = [];
-    for (let i=0; i < NUM_BRANCHES; i++) {
+    for (let i=0; i < MAX_NUM_BRANCHES; i++) {
         if (i < visibleUpTo) {
-            orderedBranches.push(makeRandomBranch());
+            orderedBranches.push({
+                branch: makeRandomBranch(),
+                under_max_blocks: null,
+                is_complete: null
+            });
         } else {
-            orderedBranches.push(new BranchClass(null, null, null, null, null));
+            orderedBranches.push({
+                branch: new BranchClass(null, null, null, null, null),
+                under_max_blocks: null,
+                is_complete: null
+            });
         }
     }
+
+    // can't add more branches beyond the max
+    $: hide_add_button = visibleDex.length >= MAX_NUM_BRANCHES;
+
+    // participant is done when all branches don't exceed the max number of total blocks and is complete
+    $: is_done = visibleDex.map(i => orderedBranches[i].under_max_blocks && orderedBranches[i].is_complete).every(under_and_complete => under_and_complete === true);
     
-    $: hideAddButton = visibleDex.length >= NUM_BRANCHES;
+    $: console.log(is_done)
     
     async function addBranch() {
-        if (visibleDex.length >= NUM_BRANCHES) {
+        if (visibleDex.length >= MAX_NUM_BRANCHES) {
             // TODO: show message about not allowing adding more
             return;
         }
@@ -35,12 +51,10 @@
 
     function removeBranch(dex) {
         visibleDex.splice(visibleDex.findIndex(x => x == dex), 1);  // remove
-        orderedBranches[dex].reset();  // reset to null values so that when it gets added back it won't retain its previous select states
+        orderedBranches[dex].branch.reset();  // reset to null values so that when it gets added back it won't retain its previous select states
         visibleDex = visibleDex;  // trigger reactivity
     }
 
-    $: console.log(visibleDex)
-    $: console.log(orderedBranches)
 </script>
 
 <p>The blicket machine activates...</p>
@@ -52,10 +66,11 @@
                 OR
             </div>
         {/if}
-        <Branch bind:branch="{orderedBranches[dex]}" />
+        <Branch bind:branch="{orderedBranches[dex].branch}" bind:under_max_blocks="{orderedBranches[dex].under_max_blocks}" bind:is_complete="{orderedBranches[dex].is_complete}" />
     </div>
 {/each}
-<button style="min-width: 3rem;" on:click="{addBranch}" class:hide="{hideAddButton}">+</button>
+
+<button style="min-width: 3rem;" on:click="{addBranch}" class:hide="{hide_add_button}">+</button>
 <p>Otherwise, the blicket machine does nothing.</p>
 
 <style>
