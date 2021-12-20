@@ -9,7 +9,7 @@
         }
     }
     
-    import { qa_dict, long_bonus_time, teaching_bonus_val, fform_dict } from '../../condition_configs/all_conditions.js';
+    import { qa_dict, short_bonus_time, teaching_bonus_val, fform_dict } from '../../condition_configs/all_conditions.js';
 
     import CenteredCard from '../partials/CenteredCard.svelte';
     import CoolWarmCaptcha from '../partials/CoolWarmCaptcha.svelte';
@@ -17,6 +17,7 @@
     import Block from '../partials/Block.svelte';
     import { FADE_DURATION_MS, FADE_IN_DELAY_MS, bonus_currency_str, make_dummy_blicket, make_dummy_nonblicket, intro_incorrect_clicks, MAX_NUM_BLOCKS, duration_str, feedback, quiz_data_dict } from '../../modules/experiment_stores.js';
     import TwoPilesAndDetector from '../partials/TwoPilesAndDetector.svelte';
+    import TeacherExamples from '../partials/TeacherExamples.svelte';
     import TeachingValidation from '../partials/TeachingValidation.svelte';
     import ForcedChoiceDNFRule from '../partials/ForcedChoiceDNFRule.svelte';
 
@@ -145,9 +146,9 @@
 
         <h3>Overview</h3>
         <ul>
-            <li>Our study lasts around {$duration_str} in total. You will see {ordered_fform_keys.length} sets of examples, each created by a teacher who wants to teach you how a "blicket machine" works.</li>
+            <li>Our study lasts around {$duration_str} in total. You will see 7 sets of examples, each created by a teacher who wants to teach you how a "blicket machine" works.</li>
             <!-- Notice bonus is only for length-1 questions because the last one is just "make your own rule" -->
-            <li><b>Your answers can earn a total bonus of up to {$bonus_currency_str}{roundMoney(teaching_bonus_val*(ordered_fform_keys.length-1))}.</b>
+            <li><b>Your answers can earn a total bonus of up to {$bonus_currency_str}{roundMoney(teaching_bonus_val*7)}.</b>
                 <!-- TODO: bonus amount -->
                 <!-- Your answers are evaluated in detail by other people, so it may take some time to calculate your corresponding bonus. Your bonus will be sent within <b>{long_bonus_time}</b>. -->
             </li>
@@ -176,30 +177,24 @@
         </div>
 
         <p><b>Real blicket machines</b> will be able to respond to blickets and/or plain blocks by <span style="background: var(--active-color); padding: 0 0.3rem;">activating with a green color</span> or doing nothing. It doesn’t matter where blickets and/or plain blocks are placed on the machine.</p>
-
-        <p>In this study, some teachers have created <b>{ordered_fform_keys.length} different sets of examples</b> to teach you how different blicket machines work: when a machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
+        
         <!-- will teach you how different blicket machines work (when the machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing) by showing you <b>{ordered_fform_keys.length} different sets of examples</b>. Each example set is created by a teacher, who may or may not be confident in knowing how the blicket machine works.</p> -->
 
         <h3>Learning from Teachers</h3>
-        <p>In each example set, a teacher has created <b>5 examples</b> to teach you about how a blicket machine works. The teacher used this setup to create an example:</p>
-
-        <!-- <TeachingValidation bind:answered_combos="{answered_combos}" bind:answered_detector_states="{answered_detector_states}" bind:answered_participant_form="{answered_participant_form}" collection_id="{ordered_fform_keys[page_dex]}" blicket_activation="{fform_dict[ordered_fform_keys[page_dex]].blicket_activation}" machine_name="{ALPHABET[page_dex]}"  has_noise="{fform_dict[ordered_fform_keys[page_dex]].has_noise}" num_blickets="{fform_dict[ordered_fform_keys[page_dex]].num_blickets}" /> -->
+        <p>In this study, a teacher has created <b>7 different sets of examples</b> to teach you how different blicket machines work: when a machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
+        <p>In each example set, a teacher has created 5 examples to teach you about how a blicket machine works. For instance, you will see one example set that looks like:</p>
+        <p>TODO: "5 teaching examples that will appear in the study"</p>
         
-        <div class="col-centering-container" style="padding: 0;">
-            <div class="qa">
-                <p style="margin-top: 0;"><b>Setup of an Example</b></p>
-                <TwoPilesAndDetector collection_id="piles_dummy" num_on_blocks_limit="{MAX_NUM_BLOCKS}" is_disabled="{false}" />
-            </div>
-        </div>
+        <!-- <div class="col-centering-container" style="padding: 0;">
+             <div class="qa">
+             <p style="margin-top: 0;"><b>Setup of an Example</b></p>
+             <TwoPilesAndDetector collection_id="piles_dummy" num_on_blocks_limit="{MAX_NUM_BLOCKS}" is_disabled="{false}" />
+             </div>
+             </div> -->
 
-        <p>The buttons work in the same way as before, except now <b>the teacher chooses</b> to show you whether the blicket machine should <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response to the blickets and/or plain blocks on the machine.</p>
-        
-        <!-- <p>We will show your examples to other people after the study. They will also know which blocks are blickets (star) or not (plain) and that it doesn't matter where blocks are placed on the machine.</p> -->
-
-        <p>Your bonus will be determined by whether other people learn how the blicket machine works based on your examples (up to {$bonus_currency_str}{roundMoney(teaching_bonus_val)} per blicket machine
-            <span class="info-box" title="Given your examples, two other people will choose from 8 options about how the blicket machine works. If one person chooses the correct option, your bonus is {$bonus_currency_str}{roundMoney(teaching_bonus_val/2)}; if both choose the correct option, your bonus is {$bonus_currency_str}{roundMoney(teaching_bonus_val)}." use:tooltip>hover/tap me for details</span>).
-
-            This bonus calculation may take some time: we will send you your bonus <b>within {long_bonus_time}</b>.</p>
+        <p>In each example, <b>the teacher has chosen</b> to put some blickets and/or plain blocks on the machine and show you whether the blicket machine should  <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response.</p>
+        <p><b>Your goal</b> is to describe how the blicket machine works based on the teacher's 5 examples. You will have the chance to practice making a blicket machine description at the bottom of this page.</p>
+        <p><b>Your bonus</b> will be determined by whether other people, such as the teacher, think your description is representative of the teacher's examples (up to {$bonus_currency_str}{roundMoney(teaching_bonus_val)} per example set). Your bonus will be sent within <b>within {short_bonus_time}</b>.</p>
         
         <div bind:this={checking_container} style="border-radius: var(--container-border-radius); box-shadow: var(--container-box-shadow); width=100%; height: 500px; overflow-y: scroll; padding: 10px; margin-top: 3rem;">
             
@@ -207,7 +202,7 @@
                 <!-- janky 3+page_dex to turn -2 and -1 into part 1 and 2, respectively -->
                 <h3 style="margin: 0">Checking Your Understanding (Part {3+page_dex}/2)</h3>
             {:else if page_dex < ordered_fform_keys.length}
-                <h3 style="margin: 0">How would you teach others about blicket machines? (Part {page_dex+1}/{ordered_fform_keys.length})</h3>
+                <h3 style="margin: 0">Given the teacher's examples, how do you think the blicket machine works? (Part {page_dex+1}/{ordered_fform_keys.length})</h3>
             {:else if page_dex === ordered_fform_keys.length}
                 <h3 style="margin: 0;">Do you have any feedback for us? (Optional)</h3>
             {/if}
