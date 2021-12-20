@@ -94,7 +94,7 @@
     }
 </script>
 
-<h2>Teacher's Examples of Blicket Machine {machine_name}</h2>
+<h2>Teacher's Example Set for Blicket Machine {machine_name}</h2>
 
 {#if is_participant_fform}
     <!-- let the participant create their own rule/form -->

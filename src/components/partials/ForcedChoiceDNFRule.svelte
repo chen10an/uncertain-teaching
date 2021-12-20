@@ -57,6 +57,7 @@
 
 </script>
 
+<h3>Your Description:</h3>
 <p>The blicket machine activates...</p>
 {#each visibleDex as dex (dex)}
     <div in:receive="{{key: ("rule_").concat(dex)}}" out:send="{{key: ("rule_").concat(dex)}}" animate:flip="{{duration: FLIP_DURATION_MS}}" style="position: relative;"> 

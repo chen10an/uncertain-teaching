@@ -36,7 +36,7 @@
     let show_feedback = false;  // whether to show feedback on the current page
     
     // Comprehension checks and captchas
-    let page_dex = 0;  // multipage checks
+    let page_dex = -3;  // multipage checks
     let all_correct = false;  // whether all understanding/captcha questions are correct on the current page
     let passed_captcha = false;  // bind to CoolWarmCaptcha
     intro_incorrect_clicks.update(dict => {
@@ -49,8 +49,9 @@
     // dynamically update all_correct for the comprehension/captcha checks
     $: {
         all_correct = true;  // start with true then flip to false depending on the checks below
-
-        if (page_dex === -2) {
+        if (page_dex === -3) {
+            all_correct = true;
+        } else if (page_dex === -2) {
             for (const key in qa_dict) {
                 if (qa_dict[key].answer !== qa_dict[key].correct_answer) {
                     all_correct = false;
@@ -180,8 +181,8 @@
         
         <!-- will teach you how different blicket machines work (when the machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing) by showing you <b>{ordered_fform_keys.length} different sets of examples</b>. Each example set is created by a teacher, who may or may not be confident in knowing how the blicket machine works.</p> -->
 
-        <h3>Learning from Teachers</h3>
-        <p>In this study, a teacher has created <b>7 different sets of examples</b> to teach you how different blicket machines work: when a machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
+        <h3>Learning from a Teacher</h3>
+        <p>In this study, a teacher wants to teach you about 7 blicket machines. For each machine, they have created an <b>example set</b> to show you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
         <p>In each example set, a teacher has created 5 examples to teach you about how a blicket machine works. For instance, you will see one example set that looks like:</p>
         <p>TODO: "5 teaching examples that will appear in the study"</p>
         
@@ -192,30 +193,46 @@
              </div>
              </div> -->
 
-        <p>In each example, <b>the teacher has chosen</b> to put some blickets and/or plain blocks on the machine and show you whether the blicket machine should  <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response.</p>
-        <p><b>Your goal</b> is to describe how the blicket machine works based on the teacher's 5 examples. You will have the chance to practice making a blicket machine description at the bottom of this page.</p>
+        <p>In each example for this blicket machine, <b>the teacher has chosen</b> to put some blickets and/or plain blocks on the machine and show you whether the blicket machine should  <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response.</p>
+        <p><b>Your goal</b> is to describe how this blicket machine works based on the teacher's 5 examples. You will have the chance to practice making a blicket machine description at the bottom of this page.</p>
         <p><b>Your bonus</b> will be determined by whether other people, such as the teacher, think your description is representative of the teacher's examples (up to {$bonus_currency_str}{roundMoney(teaching_bonus_val)} per example set). Your bonus will be sent within <b>within {short_bonus_time}</b>.</p>
         
         <div bind:this={checking_container} style="border-radius: var(--container-border-radius); box-shadow: var(--container-box-shadow); width=100%; height: 500px; overflow-y: scroll; padding: 10px; margin-top: 3rem;">
             
             {#if page_dex < 0}
                 <!-- janky 3+page_dex to turn -2 and -1 into part 1 and 2, respectively -->
-                <h3 style="margin: 0">Checking Your Understanding (Part {3+page_dex}/2)</h3>
+                <h3 style="margin: 0">Checking Your Understanding (Part {4+page_dex}/3)</h3>
             {:else if page_dex < ordered_fform_keys.length}
-                <h3 style="margin: 0">Given the teacher's examples, how do you think the blicket machine works? (Part {page_dex+1}/{ordered_fform_keys.length})</h3>
+                <h3 style="margin: 0">Teacher's Example Set {page_dex+1}/{ordered_fform_keys.length}</h3>
             {:else if page_dex === ordered_fform_keys.length}
                 <h3 style="margin: 0;">Do you have any feedback for us? (Optional)</h3>
             {/if}
             <p style="margin: 0;">(This box is scrollable.)</p>
             <hr>
-            {#if page_dex === -2}                
-                {#each Object.keys(qa_dict) as key}
-                    <div class="qa-min">
-                        <p>{@html qa_dict[key].question}</p>
-                        <label><input type="radio" bind:group={qa_dict[key].answer} value={true}>True</label>
-                        <label><input type="radio" bind:group={qa_dict[key].answer} value={false}>False</label>
-                    </div>
-                {/each}
+            {#if page_dex == -3}
+                <p style="margin-bottom: 0;"><b>Please practice describing how the blicket machine works:</b> Let's say, after seeing the teacher's examples, you think the blicket machine always activates to exactly one blicket, no matter how many non-blickets are on the machine. Please describe this by using buttons and dropdowns:</p>
+                <ul style="list-style-type:none; margin-top: 0;">
+                    <li><button style="min-width: 3rem;">+</button> adds an "OR" word to make the description longer.</li>
+                    <li><span style="cursor: pointer;" >&#10006;</span> removes an "OR" word to the description shorter.</li>
+                    <li><select><option>Dropdowns</option></select> are used to choose words and numbers in the description.</li>
+                </ul>
+                
+                <p><b>The length, words and numbers in the description are scrambled at first, so please modify them into the correct description.</b></p>
+                <ForcedChoiceDNFRule/>
+                <p>TODO: validation of correctness of the participant's rule</p>
+                <div class="button-container">
+                    <button class="abs" on:click="{cont}">Continue</button>
+                </div>
+            {:else if page_dex === -2}
+                <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}">
+                    {#each Object.keys(qa_dict) as key}
+                        <div class="qa-min">
+                            <p>{@html qa_dict[key].question}</p>
+                            <label><input type="radio" bind:group={qa_dict[key].answer} value={true}>True</label>
+                            <label><input type="radio" bind:group={qa_dict[key].answer} value={false}>False</label>
+                        </div>
+                    {/each}
+                </div>
                 <div>
                     <div class="button-container">
                         <button class="abs" on:click="{cont}">Continue</button>
@@ -279,7 +296,7 @@
                 <!-- ask for feedback after going through all forms -->
                 
                 <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}" out:fade="{{duration: FADE_DURATION_MS}}" class="col-centering-container">
-                    <p>We're at the end of the study and we're interested in hearing your thoughts! For example, how was it to give teaching examples? Were 5 examples too few or too many? Thank you in advance :)</p>
+                    <p>We're at the end of the study and we're interested in hearing your thoughts! For example, how was it to learn from the teacher's examples? Or how was it to create blicket machine descriptions? Thank you in advance :)</p>
                     <textarea bind:value={$feedback}></textarea>
                     
                     <div class="button-container">
