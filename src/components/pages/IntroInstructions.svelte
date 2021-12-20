@@ -49,6 +49,7 @@
     $: {
         all_correct = true;  // start with true then flip to false depending on the checks below
         if (page_dex === -3) {
+            // TODO: 
             all_correct = true;
         } else if (page_dex === -2) {
             for (const key in qa_dict) {
@@ -64,13 +65,10 @@
     }
 
     // Teaching examples
-    let answered_combos = false;  // whether participant has used at least one blicket/nonblicket in all examples
-    let answered_detector_states = false;  // whether the participant has chosen a detector state (true/false, not null) for all examples
-    let answered_participant_form = false;  // whether the participant has given a free text response describing their choice of form
-    $: answered_all_teaching = answered_combos && answered_detector_states && answered_participant_form;  // derive whether the teaching examples have been completely filled out
+    let rule_is_done = false;
 
     // dynamically update whether participant can continue to next subpage
-    $: can_cont = page_dex < 0 ? all_correct : answered_all_teaching 
+    $: can_cont = page_dex < 0 ? all_correct : rule_is_done 
     // negative page numbers need all correct answers (for comprehension/captcha checks) while positive page numbers just need all questions to be answered (for teaching questions)
 
     // Click handler    
@@ -257,12 +255,12 @@
             {:else if page_dex < ordered_fform_keys.length}
                 {#key page_dex}
                     <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}" out:fade="{{duration: FADE_DURATION_MS}}">
-                        <TeachingValidation bind:answered_combos="{answered_combos}" bind:answered_detector_states="{answered_detector_states}" bind:answered_participant_form="{answered_participant_form}" collection_id="{ordered_fform_keys[page_dex]}" blicket_activation="{fform_dict[ordered_fform_keys[page_dex]].blicket_activation}" machine_name="{ALPHABET[page_dex]}"  has_noise="{fform_dict[ordered_fform_keys[page_dex]].has_noise}" num_blickets="{fform_dict[ordered_fform_keys[page_dex]].num_blickets}" />
+                        <TeachingValidation collection_id="{ordered_fform_keys[page_dex]}" blicket_activation="{fform_dict[ordered_fform_keys[page_dex]].blicket_activation}" machine_name="{ALPHABET[page_dex]}"  has_noise="{fform_dict[ordered_fform_keys[page_dex]].has_noise}" num_blickets="{fform_dict[ordered_fform_keys[page_dex]].num_blickets}" />
                     </div>
                 {/key}
 
                 <h3>Given the teacher's examples, how do you think blicket machine {ALPHABET[page_dex]} works?</h3>
-                <ForcedChoiceDNFRule/>
+                <ForcedChoiceDNFRule bind:is_done="{rule_is_done}" />
                 <h3>Do you think the teacher is confident about knowing how blicket machine {ALPHABET[page_dex]} works?
     <label><input type="radio" value="{true}">Yes</label>
     <label><input type="radio" value="{false}">No</label>
@@ -275,19 +273,8 @@
                     </div>
 
                     <div class:hide={!show_feedback} class="wrong">
-                        {#if !answered_all_teaching}
-                            <p style="margin-bottom: 0;">Please make sure you have:</p>
-                            <ul style="margin: 0;">
-                                {#if !answered_participant_form}
-                                    <li>filled out the textbox
-                                {/if}
-                                {#if !answered_combos}
-                                    <li>added at least one blicket or plain block to the machine in every example</li>
-                                {/if}
-                                {#if !answered_detector_states}
-                                    <li>chosen one of <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in every example</li>
-                                {/if}
-                            </ul>
+                        {#if !rule_is_done}
+                            <p style="margin-bottom: 0;">Please make sure you have completed your description. There should be no <i>red</i> dropdowns or text in your description.</p>
                         {/if}
                     </div>
                 </div>
