@@ -17,7 +17,6 @@
     import Block from '../partials/Block.svelte';
     import { FADE_DURATION_MS, FADE_IN_DELAY_MS, bonus_currency_str, make_dummy_blicket, make_dummy_nonblicket, intro_incorrect_clicks, MAX_NUM_BLOCKS, duration_str, feedback, quiz_data_dict } from '../../modules/experiment_stores.js';
     import TwoPilesAndDetector from '../partials/TwoPilesAndDetector.svelte';
-    import TeacherExamples from '../partials/TeacherExamples.svelte';
     import TeachingValidation from '../partials/TeachingValidation.svelte';
     import ForcedChoiceDNFRule from '../partials/ForcedChoiceDNFRule.svelte';
 
