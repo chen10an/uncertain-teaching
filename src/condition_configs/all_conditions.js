@@ -20,7 +20,8 @@ export const qa_dict = {
     "teaching": {"question": `When you make a blicket machine description, the length, words and numbers in the description are scrambled at first, so your goal is to modify them into the correct description.`, "correct_answer": true},
 };
 
-const teacher_to_collection_to_ex = {
+// OBS: there should only be one teacher/session id per condition so that the collection ids are unique within that condition
+export const teacher_to_collection_to_ex = {
     'y048Xdw4VumCkDB5QKW8HQg0eTMOfxZN': {
         'noisy_conj3': [{blicket_nonblicket_combo: "****", detector_state: true}, {blicket_nonblicket_combo: "***", detector_state: true}, {blicket_nonblicket_combo: "***", detector_state: false}, {blicket_nonblicket_combo: "**", detector_state: false}, {blicket_nonblicket_combo: "*", detector_state: false}]
     }

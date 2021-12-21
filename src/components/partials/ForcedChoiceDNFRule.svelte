@@ -35,7 +35,7 @@
 
     // participant is done when all branches don't exceed the max number of total blocks and is complete
     $: is_done = visibleDex.map(i => orderedBranches[i].under_max_blocks && orderedBranches[i].is_complete).every(under_and_complete => under_and_complete === true);
-    
+     
     $: console.log(is_done)
     
     async function addBranch() {

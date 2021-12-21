@@ -18,6 +18,7 @@
     import { FADE_DURATION_MS, FADE_IN_DELAY_MS, bonus_currency_str, make_dummy_blicket, make_dummy_nonblicket, intro_incorrect_clicks, MAX_NUM_BLOCKS, duration_str, feedback, quiz_data_dict } from '../../modules/experiment_stores.js';
     import TwoPilesAndDetector from '../partials/TwoPilesAndDetector.svelte';
     import TeachingValidation from '../partials/TeachingValidation.svelte';
+    import TeachingExampleSet from '../partials/TeacherExampleSet.svelte';
     import ForcedChoiceDNFRule from '../partials/ForcedChoiceDNFRule.svelte';
 
     import { roundMoney } from '../../modules/utilities.js';
@@ -255,7 +256,7 @@
             {:else if page_dex < ordered_fform_keys.length}
                 {#key page_dex}
                     <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}" out:fade="{{duration: FADE_DURATION_MS}}">
-                        <TeachingValidation collection_id="{ordered_fform_keys[page_dex]}" blicket_activation="{fform_dict[ordered_fform_keys[page_dex]].blicket_activation}" machine_name="{ALPHABET[page_dex]}"  has_noise="{fform_dict[ordered_fform_keys[page_dex]].has_noise}" num_blickets="{fform_dict[ordered_fform_keys[page_dex]].num_blickets}" />
+                        <TeachingExampleSet teacher_sess="y048Xdw4VumCkDB5QKW8HQg0eTMOfxZN" collection_prefix="noisy_conj3" machine_name="{ALPHABET[page_dex]}" />
                     </div>
                 {/key}
 
