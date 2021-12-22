@@ -17,12 +17,10 @@
     import Block from '../partials/Block.svelte';
     import { FADE_DURATION_MS, FADE_IN_DELAY_MS, bonus_currency_str, make_dummy_blicket, make_dummy_nonblicket, intro_incorrect_clicks, MAX_NUM_BLOCKS, duration_str, feedback, quiz_data_dict } from '../../modules/experiment_stores.js';
     import TwoPilesAndDetector from '../partials/TwoPilesAndDetector.svelte';
-    import TeachingValidation from '../partials/TeachingValidation.svelte';
-    import TeachingExampleSet from '../partials/TeacherExampleSet.svelte';
+    import TeacherExampleSet from '../partials/TeacherExampleSet.svelte';
     import ForcedChoiceDNFRule from '../partials/ForcedChoiceDNFRule.svelte';
 
     import { roundMoney } from '../../modules/utilities.js';
-    import { tooltip } from '../../modules/tooltip.js';
 
     import { fade } from 'svelte/transition';
     import { createEventDispatcher, tick } from 'svelte';
@@ -256,7 +254,7 @@
             {:else if page_dex < ordered_fform_keys.length}
                 {#key page_dex}
                     <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}" out:fade="{{duration: FADE_DURATION_MS}}">
-                        <TeachingExampleSet teacher_sess="y048Xdw4VumCkDB5QKW8HQg0eTMOfxZN" collection_prefix="noisy_conj3" machine_name="{ALPHABET[page_dex]}" />
+                        <TeacherExampleSet collection_prefix="noisy_conj3" machine_name="{ALPHABET[page_dex]}" />
                     </div>
                 {/key}
 
