@@ -38,7 +38,7 @@
 <ul style="list-style-type:none;">
     <li><select><option>Dropdowns</option></select> are used to choose words and numbers in the description.</li>
     <li><button style="min-width: 3rem;">+</button> adds an "OR" word to make the description longer. You can add up to {MAX_NUM_BRANCHES-1} "OR"s.</li>
-    <li><span style="cursor: pointer;" >&#10006;</span> removes an "OR" word to make the description shorter.</li>
+    <li><span style="cursor: pointer; color: var(--dark-gray);" >&#10006;</span> removes an "OR" word to make the description shorter.</li>
 </ul>
                 
 <p><b>The description's words, numbers, and length are scrambled at first, so please use the dropdowns and buttons to modify them into the correct description.</b></p>
