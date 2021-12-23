@@ -31,11 +31,9 @@
     import CenteredCard from '../partials/CenteredCard.svelte';
     import TeacherExampleSet from '../partials/TeacherExampleSet.svelte';
     import ForcedChoiceDNFRule from '../partials/ForcedChoiceDNFRule.svelte';
-    import { feedback, FADE_DURATION_MS, FADE_IN_DELAY_MS, raw_current_score, bonus_val, bonus_currency_str, make_dummy_blicket, make_dummy_nonblicket } from '../../modules/experiment_stores.js';
-    import { tooltip } from '../../modules/tooltip.js';
-    import { short_bonus_time, student_bonus_val } from '../../condition_configs/all_conditions.js';
+    import { feedback, bonus_currency_str} from '../../modules/experiment_stores.js';
+    import { student_bonus_val } from '../../condition_configs/all_conditions.js';
     import { roundMoney } from '../../modules/utilities.js';
-    import { fade } from 'svelte/transition';
     import { createEventDispatcher } from 'svelte';
     
     // Initialize and store variables
@@ -89,20 +87,20 @@
 
 <CenteredCard is_large={true} has_button={false}>
     <h2>Teacher's Example Set ({quiz_dex+1}/{max_quiz_dex+1}): Blicket Machine {machine_name}</h2>
-
-    <!-- <h3>Do you think these blocks are blickets?</h3>
-         <p style="margin: 0 0 2rem 0;">The closer you are to the correct rating (10 for blickets, 0 for non-blickets), the bigger your bonus will be (up to {$bonus_currency_str}{roundMoney($bonus_val)} per rating). The correct ratings will be revealed at the end of the study and your corresponding bonus will be sent <b>within {short_bonus_time}</b>.</p> -->
         
     <TeacherExampleSet collection_prefix="{collection_id}" />
-    <h3 style="margin-bottom: 0;">Given the teacher's examples, how do you think blicket machine {machine_name} works?</h3>
-    
+    <h3 style="margin-bottom: 0;">Based on the teacher's examples, how do you think blicket machine {machine_name} works?</h3>
+
+    <p style="margin-bottom: 0;">The description's words, numbers, and length are <b>scrambled</b> at first, so please modify them to describe how you think the blicket machine works.</p>
+    <p>Your <b>bonus</b> will be determined by whether other people, such as the teacher, think your description is representative of the teacher's examples (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} for this example set).</p>
     <ForcedChoiceDNFRule bind:is_done="{rule_is_done}" bind:visible_branches="{$quiz_data_dict[collection_id].rule}" />
     
-    <h3>Do you think the teacher is confident about knowing how blicket machine {machine_name} works?
+    <h3 style="margin-bottom: 0;">Do you think the teacher is confident about knowing how blicket machine {machine_name} works?</h3>
+    <h3 style="margin-top: 0;">
         <label><input type="radio" bind:group="{$quiz_data_dict[collection_id].is_confident}" value="{true}">Yes</label>
-        <label><input type="radio" bind:group="{$quiz_data_dict[collection_id].is_confident}" value="{false}">No</label>
+                <label><input type="radio" bind:group="{$quiz_data_dict[collection_id].is_confident}" value="{false}">No</label>
     </h3>
-    
+                
     {#if is_last}
         <h3 style="margin-bottom: 0;">Do you have any feedback for us? (Optional)</h3>
         <p>We're at the end of the study and we're interested in hearing your thoughts! For example, how was it to learn from the teacher's examples? Or how was it to create blicket machine descriptions? Thank you in advance :)</p>
