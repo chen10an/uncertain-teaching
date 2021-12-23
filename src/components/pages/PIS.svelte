@@ -8,7 +8,7 @@
     <p>This study was certified according to the Informatics Research Ethics Process, RT number 2019/58792. Please take time to read the following information carefully. You should keep this page for your records.</p>
 
     <h3>Who are the researchers?</h3>
-    <p>The researchers are from the Informatics department at the University of Edinburgh: Christopher G. Lucas and Chentian Jiang.</p>
+    <p>The researchers are from the Informatics department at the University of Edinburgh: Christopher G. Lucas, Francis Mollica, and Chentian Jiang.</p>
 
     <h3>What is the purpose of the study?</h3>
     <p>The purpose of this study is to understand how people learn and make decisions in the face of uncertainty and ambiguity.</p>
@@ -26,7 +26,7 @@
     <p>Your session should last around {$duration_str}. You will be given full instructions shortly.</p>
 
     <h3>Compensation.</h3>
-    <p>You will be paid for your participation in this study in accordance with the MTurk HIT description.</p>
+    <p>You will be paid for your participation in this study in accordance with the Prolific study description.</p>
 
     <h3>Are there any risks associated with taking part?</h3>
     <p>There are no significant risks associated with participation.</p>
