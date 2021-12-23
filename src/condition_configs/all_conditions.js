@@ -120,7 +120,7 @@ for (let i=0; i < ordered_sess.length; i++) {
         "PIS": {},
         "IntroInstructions": {collection_id: "intro"}
     };
-    let end = {"End": {code_suffix: ""}};
+    let end = {"End": {}};
     
     ordered_seq.push({
         ...beg,
