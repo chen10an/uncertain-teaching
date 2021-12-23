@@ -12,7 +12,7 @@
     // [0..NONBLICKET_START_DEX) in block_dict contains blickets; [NONBLICKET_START_DEX..NON_BLICKET_START_DEX*2) in block_dict contains nonblickets
     const NONBLICKET_START_DEX = MAX_NUM_BLOCKS;
     // there are a total of MAX_NUM_BLOCKS blocks for each blicket/nonblicket pile
-    
+
     // if they don't exist, create one collection of blocks for blickets AND nonblickets
     if (!(collection_id in $block_dict)) {
         let blicket_pile = []

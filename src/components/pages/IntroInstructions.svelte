@@ -1,15 +1,9 @@
 <script>
     export let collection_id = "intro";
-    export let ordered_fform_keys;  // order of underlying forms for teaching questions
     
     import { dev_mode } from '../../modules/experiment_stores.js';
-    if ($dev_mode) {
-        if (ordered_fform_keys === undefined) {
-            ordered_fform_keys = ["disj", "participant"];  // make sure these correspond with actual keys in the fform_dict
-        }
-    }
     
-    import { qa_dict, short_bonus_time, teaching_bonus_val, fform_dict } from '../../condition_configs/all_conditions.js';
+    import { qa_dict, short_bonus_time, student_bonus_val } from '../../condition_configs/all_conditions.js';
 
     import CenteredCard from '../partials/CenteredCard.svelte';
     import CoolWarmCaptcha from '../partials/CoolWarmCaptcha.svelte';
@@ -72,12 +66,7 @@
 
     // Click handler    
     async function cont() {
-        if (page_dex === ordered_fform_keys.length) {
-            // go to next component after the subpage that asks for participant feedback; don't need to check that the participant has filled out the feedback
-
-            // escape quotes in feedback
-            feedback.set(escape_quotes($feedback));
-
+        if (page_dex === 0) {
             dispatch("continue");
 
             if ($dev_mode) {
@@ -86,14 +75,6 @@
             
         } else if (can_cont) {
             // check if we can continue when page_dex < ordered_fform_keys.length
-
-            if (page_dex >= 0) {
-                // if we're on a page with teaching examples, escape quotes for its text responses
-                quiz_data_dict.update(dict => {
-                    dict[ordered_fform_keys[page_dex]].participant_form_response = escape_quotes(dict[ordered_fform_keys[page_dex]].participant_form_response);
-                    return dict;
-                });
-            }
             
             page_dex += 1;
             show_feedback = false;
@@ -122,16 +103,6 @@
             checking_container.scrollTop = checking_container.scrollHeight;  // scroll to bottom of container so that the participant can see the feedback
         }
     }
-
-    function escape_quotes(response) {
-        if (response === null) {
-            return null
-        }
-        
-        let ret = response.replaceAll('"', '\\"');
-        ret = ret.replaceAll("'", "\\'");
-        return ret;
-    }
 </script>
 
 <CenteredCard is_large={true} has_button={false}>
@@ -145,7 +116,7 @@
         <ul>
             <li>Our study lasts around {$duration_str} in total. You will see 7 sets of examples, each created by a teacher who wants to teach you how a "blicket machine" works.</li>
             <!-- Notice bonus is only for length-1 questions because the last one is just "make your own rule" -->
-            <li><b>Your answers can earn a total bonus of up to {$bonus_currency_str}{roundMoney(teaching_bonus_val*7)}.</b>
+            <li><b>Your answers can earn a total bonus of up to {$bonus_currency_str}{roundMoney(student_bonus_val*7)}.</b>
                 <!-- TODO: bonus amount -->
                 <!-- Your answers are evaluated in detail by other people, so it may take some time to calculate your corresponding bonus. Your bonus will be sent within <b>{long_bonus_time}</b>. -->
             </li>
@@ -181,28 +152,15 @@
         <p>In this study, a teacher wants to teach you about 7 blicket machines. For each machine, they have created an <b>example set</b> to show you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
         <p>In each example set, a teacher has created 5 examples to teach you about how a blicket machine works. For instance, you will see one example set that looks like:</p>
         <p>TODO: "5 teaching examples that will appear in the study"</p>
-        
-        <!-- <div class="col-centering-container" style="padding: 0;">
-             <div class="qa">
-             <p style="margin-top: 0;"><b>Setup of an Example</b></p>
-             <TwoPilesAndDetector collection_id="piles_dummy" num_on_blocks_limit="{MAX_NUM_BLOCKS}" is_disabled="{false}" />
-             </div>
-             </div> -->
 
         <p>In each example for this blicket machine, <b>the teacher has chosen</b> to put some blickets and/or plain blocks on the machine and show you whether the blicket machine should  <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response.</p>
         <p><b>Your goal</b> is to describe how this blicket machine works based on the teacher's 5 examples. You will have the chance to practice making a blicket machine description at the bottom of this page.</p>
-        <p><b>Your bonus</b> will be determined by whether other people, such as the teacher, think your description is representative of the teacher's examples (up to {$bonus_currency_str}{roundMoney(teaching_bonus_val)} per example set). Your bonus will be sent within <b>within {short_bonus_time}</b>.</p>
+        <p><b>Your bonus</b> will be determined by whether other people, such as the teacher, think your description is representative of the teacher's examples (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} per example set). Your bonus will be sent within <b>within {short_bonus_time}</b>.</p>
         
         <div bind:this={checking_container} style="border-radius: var(--container-border-radius); box-shadow: var(--container-box-shadow); width=100%; height: 500px; overflow-y: scroll; padding: 10px; margin-top: 3rem;">
             
-            {#if page_dex < 0}
-                <!-- janky 3+page_dex to turn -2 and -1 into part 1 and 2, respectively -->
-                <h3 style="margin: 0">Checking Your Understanding (Part {4+page_dex}/3)</h3>
-            {:else if page_dex < ordered_fform_keys.length}
-                <h3 style="margin: 0">Teacher's Example Set {page_dex+1}/{ordered_fform_keys.length}</h3>
-            {:else if page_dex === ordered_fform_keys.length}
-                <h3 style="margin: 0;">Do you have any feedback for us? (Optional)</h3>
-            {/if}
+            <!-- janky 4+page_dex to turn -3, -2, -1 into part 1, 2, 3 respectively -->
+            <h3 style="margin: 0">Checking Your Understanding (Part {4+page_dex}/3)</h3>
             <p style="margin: 0;">(This box is scrollable.)</p>
             <hr>
             {#if page_dex == -3}
@@ -248,45 +206,6 @@
                             <button class="abs" style="transform: translateX(-50%); width: 7rem;" on:click="{cont}">Begin</button>
                         </div>
                         <p class:hide={!show_feedback} class="wrong">Please move only the warm-colored blocks from left to right.</p>
-                    </div>
-                </div>
-
-            {:else if page_dex < ordered_fform_keys.length}
-                {#key page_dex}
-                    <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}" out:fade="{{duration: FADE_DURATION_MS}}">
-                        <TeacherExampleSet collection_prefix="noisy_conj3" machine_name="{ALPHABET[page_dex]}" />
-                    </div>
-                {/key}
-
-                <h3>Given the teacher's examples, how do you think blicket machine {ALPHABET[page_dex]} works?</h3>
-                <ForcedChoiceDNFRule bind:is_done="{rule_is_done}" />
-                <h3>Do you think the teacher is confident about knowing how blicket machine {ALPHABET[page_dex]} works?
-    <label><input type="radio" value="{true}">Yes</label>
-    <label><input type="radio" value="{false}">No</label>
-                </h3>
-                
-                <div class="col-centering-container" style="padding: 0;">
-                    <div class="button-container">
-                        <!-- translate to center-->
-                        <button class="abs" style="transform: translateX(-50%); width: 7rem;" on:click="{cont}">Submit</button>
-                    </div>
-
-                    <div class:hide={!show_feedback} class="wrong">
-                        {#if !rule_is_done}
-                            <p style="margin-bottom: 0;">Please make sure you have completed your description. There should be no <i>red</i> dropdowns or text in your description.</p>
-                        {/if}
-                    </div>
-                </div>
-            {:else if page_dex === ordered_fform_keys.length}
-                <!-- ask for feedback after going through all forms -->
-                
-                <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}" out:fade="{{duration: FADE_DURATION_MS}}" class="col-centering-container">
-                    <p>We're at the end of the study and we're interested in hearing your thoughts! For example, how was it to learn from the teacher's examples? Or how was it to create blicket machine descriptions? Thank you in advance :)</p>
-                    <textarea bind:value={$feedback}></textarea>
-                    
-                    <div class="button-container">
-                        <!-- translate to center-->
-                        <button class="abs" style="transform: translateX(-50%); width: 7rem;" on:click="{cont}">Submit</button>
                     </div>
                 </div>
             {/if}

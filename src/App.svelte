@@ -4,34 +4,24 @@
 
 	  import ExperimentController from './routes/ExperimentController.svelte';
 	  import TestComponent from './components/pages/IntroInstructions.svelte';
+	  import TestComponent2 from './components/pages/Quiz.svelte';
     import IntroInstructions from './components/pages/IntroInstructions.svelte';
 	  import { bonus_currency_str, dev_mode } from './modules/experiment_stores.js';
 
-	  import { row0_seq,
-           row1_seq,
-           row2_seq,
-           row3_seq,
-           row4_seq,
-           row5_seq
-           } from './condition_configs/all_conditions.js';
+	  import {
+        sess0,
+        seq0
+    } from './condition_configs/all_conditions.js';
 
 
 	  // configure the experiment conditions and bonuses
-	  const ALL_SEQ = [row0_seq,
-                     row1_seq,
-                     row2_seq,
-                     row3_seq,
-                     row4_seq,
-                     row5_seq
+	  const ALL_SEQ = [
+        seq0
     ]
-	  const ALL_SEQ_NAMES = ["row0_seq",
-                           "row1_seq",
-                           "row2_seq",
-                           "row3_seq",
-                           "row4_seq",
-                           "row5_seq",
+	  const ALL_SEQ_NAMES = [
+        sess0
     ];
-	  bonus_currency_str.set("$");
+	  bonus_currency_str.set("£");
 
 	  // TODO: route that doesn't write data (can be turned on/off separately from dev mode)
 	  // create routes
@@ -43,7 +33,7 @@
 				        component_sequence: ALL_SEQ[i],
 				        experiment_id: "uncertain_teaching_00x",
 				        condition_name: ALL_SEQ_NAMES[i],
-				        bonus_val_per_q: 0,  // value for questions that can be scored automatically; there are only manual scoring questions in this experiment
+				        bonus_val_per_q: 0.15,  // value for questions that can be scored automatically; there are only manual scoring questions in this experiment
 				        set_dev_mode: false
 			      }
 		    });
@@ -54,7 +44,7 @@
 				        component_sequence: ALL_SEQ[i],
 				        experiment_id: "uncertain_teaching_00x-dev",
 				        condition_name: ALL_SEQ_NAMES[i],
-				        bonus_val_per_q: 0,
+				        bonus_val_per_q: 0.15,
 				        set_dev_mode: true
 			      }
 		    });
@@ -70,6 +60,18 @@
             },
         ]
 	  });
+
+    routes["/test2"] = wrap({
+		    component: TestComponent2,
+		    conditions: [
+            // hack: use pre-condition to activate dev_mode
+            (detail) => {
+				        dev_mode.set(true);
+				        return dev_mode;
+            },
+        ]
+	  });
+
 
     routes["/demo"] = wrap({
 		    component: IntroInstructions,

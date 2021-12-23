@@ -6,7 +6,6 @@
     import { current_score, bonus_val } from '../../modules/experiment_stores.js';   
     
     import CenteredCard from '../partials/CenteredCard.svelte';
-    import { long_bonus_time } from '../../condition_configs/all_conditions.js';
     
     const CODE_PREFIX = "K3SHW";  // generated with www.random.org
     const CODE_MID = ["CS", $current_score.toString().replace(".", "D"), "-", "BV", $bonus_val.toString().replace(".", "D")].join("");
@@ -29,7 +28,7 @@
 {:else}
     <CenteredCard has_button={false}>
         <h3 style="margin-bottom: 0">Thank you for participating!</h3>
-        <p>Your teaching examples will be shown to other people, and your bonus will be determined by whether they learn how the blicket machine works based on your examples. This bonus calculation may take some time: we will send you your bonus <b>within {long_bonus_time}</b>.</p>
+        <p>Your teaching examples will be shown to other people, and your bonus will be determined by whether they learn how the blicket machine works based on your examples. This bonus calculation may take some time: we will send you your bonus <b>within </b>.</p>
         
         <p style="margin-top: 0;">Your MTurk completion code is: {[CODE_PREFIX, CODE_MID, code_suffix].join("-")}</p>
         <img src="/images/thankyou.jpg" alt="dog biting a thank you card">

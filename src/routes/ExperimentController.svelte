@@ -1,5 +1,5 @@
 <script>
-	  export let component_sequence;
+    export let component_sequence;
 	  export let experiment_id;
 	  export let condition_name;
 	  export let bonus_val_per_q;
@@ -28,6 +28,7 @@
 		    reset_experiment_stores,
 		    current_total_bonus
 	  } from '../modules/experiment_stores.js';
+    import { teacher_to_collection_to_ex } from '../condition_configs/all_conditions.js';
 	  import { ChunksIncremental } from '../modules/ChunksIncremental.js';
 
 	  import { onDestroy } from 'svelte';
@@ -38,6 +39,14 @@
 
 	  dev_mode.set(set_dev_mode);
 	  bonus_val.set(bonus_val_per_q);
+
+    // populate quiz_data_dict based on the selected teacher for the current experimental condition; teacher's session_id is in condition_name
+    quiz_data_dict.update(dict => {
+        for (const collection_id in teacher_to_collection_to_ex[condition_name]) {
+            dict[collection_id] = {teaching_ex: teacher_to_collection_to_ex[condition_name][collection_id]};
+        }
+        return dict;
+    });
 
 	  // get the route (which contains the experiment condition) and the workerId
 	  // note that this code only supports a query string with the regex pattern specified in query_re
@@ -125,13 +134,13 @@
 	  let progress_inc = 1/(Object.keys(component_sequence).length - 1);  // how much to increment the progress bar for each component
 
 	  // update the max possible quiz score based on the props to the Quiz component
-	  let max_quiz_score = 0;
-	  for (const key in component_sequence) {
-		    if (key.split("_")[0] == "Quiz") {
-			      max_quiz_score += component_sequence[key].correct_blicket_ratings.length;
-		    }
-	  }
-	  max_score.set(max_quiz_score);
+	  // let max_quiz_score = 0;
+    // 	  for (const key in component_sequence) {
+    // 		    if (key.split("_")[0] == "Quiz") {
+    // 			      max_quiz_score += component_sequence[key].correct_blicket_ratings.length;
+    // 		    }
+    // 	  }
+    // 	  max_score.set(max_quiz_score);
 
 	  // convert from the string of a component name to the component itself
 	  let str_to_component = {
@@ -164,70 +173,72 @@
 	  }
 
 	  function handleContinue(event) {
-		    if (event.detail && event.detail.trouble) {  // force the end of the experiment
-			                                            // change key and props but not the component itself (so that the svelte:component is not rerendered yet)
-			                                            next_key = "End";
-			                                            is_trouble = true;
-			                                            next_props = {is_trouble: is_trouble};
-		                                              } else {
-			                                                // increment task_quiz_dex to select the next task or quiz
-			                                                task_quiz_dex += 1;
-			                                                // incremement the progress bar
-			                                                progress.update(x => x + progress_inc);
-			                                                
-			                                                // change key and props but not the component itself (so that the svelte:component is not rerendered yet)
-			                                                next_key = task_quiz_keys[task_quiz_dex];
-			                                                next_props = component_sequence[next_key];
-		                                              }
+		    if (event.detail && event.detail.trouble) {
+            // force the end of the experiment
+			      // change key and props but not the component itself (so that the svelte:component is not rerendered yet)
+			      next_key = "End";
+			      is_trouble = true;
+			      next_props = {is_trouble: is_trouble};
+		    } else {
+			      // increment task_quiz_dex to select the next task or quiz
+			      task_quiz_dex += 1;
+			      // incremement the progress bar
+			      progress.update(x => x + progress_inc);
+			      
+			      // change key and props but not the component itself (so that the svelte:component is not rerendered yet)
+			      next_key = task_quiz_keys[task_quiz_dex];
+			      next_props = component_sequence[next_key];
+		    }
+        
+		    if (!$dev_mode) {
+            // send data only in prod
+			      if (next_key.split("_")[0] === "End") {
+				        // send data in prod at the end of the experiment
+				        let message = {
+					          experimentId: experiment_id,
+					          sessionId: session_id,
+					          timestamp: Date.now(),
+					          route: route,
+					          condition_name: condition_name,
+					          passed_intro: passed_intro,
+					          seq_key: next_key,
+					          is_trouble: is_trouble,
+					          honeypot_responses: $honeypot_responses,
+					          intro_incorrect_clicks: $intro_incorrect_clicks,
+					          score: $current_score,
+					          max_score: $max_score,
+					          bonus_per_q: $bonus_val,
+					          total_bonus: $current_total_bonus,
+					          feedback: $feedback,
+					          task_data: $task_data_dict,
+					          quiz_data: $quiz_data_dict,
+					          blocks: $to_store_block_dict
+				        };
+				        wso.sendChunk(message);
+				        return;  // let message callback handle rendering the next component
+			      } else if (task_quiz_dex >= 1) {
+				        let prev_dex = task_quiz_dex - 1;
+				        let prev_key = task_quiz_keys[prev_dex];
 
-		    if (!$dev_mode) {  // send data only in prod
-			                  if (next_key.split("_")[0] === "End") {
-				                    // send data in prod at the end of the experiment
-				                    let message = {
-					                      experimentId: experiment_id,
-					                      sessionId: session_id,
-					                      timestamp: Date.now(),
-					                      route: route,
-					                      condition_name: condition_name,
-					                      passed_intro: passed_intro,
-					                      seq_key: next_key,
-					                      is_trouble: is_trouble,
-					                      honeypot_responses: $honeypot_responses,
-					                      intro_incorrect_clicks: $intro_incorrect_clicks,
-					                      score: $current_score,
-					                      max_score: $max_score,
-					                      bonus_per_q: $bonus_val,
-					                      total_bonus: $current_total_bonus,
-					                      feedback: $feedback,
-					                      task_data: $task_data_dict,
-					                      quiz_data: $quiz_data_dict,
-					                      blocks: $to_store_block_dict
-				                    };
-				                    wso.sendChunk(message);
-				                    return;  // let message callback handle rendering the next component
-			                  } else if (task_quiz_dex >= 1) {
-				                    let prev_dex = task_quiz_dex - 1;
-				                    let prev_key = task_quiz_keys[prev_dex];
-
-				                    if (prev_key.split("_")[0] === "IntroInstructions") {
-					                      passed_intro = true;
-					                      // send some data after the participant passes the intro, i.e. after they have committed to starting the experiment
-					                      // if this session_id doesn't have a matching chunk at the end of the experiment,
-					                      // we'll know that this person quit mid-way through even though they were interested enough to
-					                      // pass the checks on the intro page
-					                      wso.sendChunk({
-						                        experimentId: experiment_id,
-						                        sessionId: session_id,
-						                        timestamp: Date.now(),
-						                        route: route,
-						                        condition_name: condition_name,
-						                        passed_intro: passed_intro,
-						                        seq_key: prev_key
-					                      });
-					                      return;  // let message callback handle rendering the next component
-				                    }
-			                  }
-		                    }
+				        if (prev_key.split("_")[0] === "IntroInstructions") {
+					          passed_intro = true;
+					          // send some data after the participant passes the intro, i.e. after they have committed to starting the experiment
+					          // if this session_id doesn't have a matching chunk at the end of the experiment,
+					          // we'll know that this person quit mid-way through even though they were interested enough to
+					          // pass the checks on the intro page
+					          wso.sendChunk({
+						            experimentId: experiment_id,
+						            sessionId: session_id,
+						            timestamp: Date.now(),
+						            route: route,
+						            condition_name: condition_name,
+						            passed_intro: passed_intro,
+						            seq_key: prev_key
+					          });
+					          return;  // let message callback handle rendering the next component
+				        }
+			      }
+		    }
 
 		    // update the component itself (so that the svelte:component is rerendered)
 		    current_component = str_to_component[next_key.split("_")[0]];
@@ -238,7 +249,10 @@
 
 <svelte:window bind:scrollY={scrollY}/>
 <!-- Dynamically show different components to the participant -->
-<svelte:component this={current_component} {...current_props} on:continue={handleContinue}/>
+{#key current_props}
+    <!-- when the current_component stays on the same component, e.g., Quiz, but the props change, we can force the component to be reinitialized via the #key block (https://stackoverflow.com/questions/58011307/svelte-js-how-to-rerender-child-components-with-new-props) -->
+    <svelte:component this={current_component} {...current_props} on:continue={handleContinue}/>
+{/key}
 
 <div class="bottom">
 	  <progress value={$progress}></progress>
