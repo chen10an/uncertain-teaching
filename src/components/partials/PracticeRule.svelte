@@ -2,7 +2,7 @@
     export let passed = false;  // bind to tell parent whether practice has been done correctly
     
     import ForcedChoiceDNFRule from '../partials/ForcedChoiceDNFRule.svelte';
-    import { Branch } from '../../modules/rule_classes.js';
+    import { Branch, MAX_NUM_BRANCHES } from '../../modules/rule_classes.js';
 
     let correct_rule = [new Branch(1, "=", 1, "any", null)]
     
@@ -37,8 +37,8 @@
 <p style="margin-bottom: 0;"><b>Please practice describing how the blicket machine works:</b> Suppose that, after seeing the teacher's examples, you think the blicket machine always activates to exactly one blicket, no matter how many non-blickets are on the machine. Please describe this by using the dropdowns and buttons below:</p>
 <ul style="list-style-type:none;">
     <li><select><option>Dropdowns</option></select> are used to choose words and numbers in the description.</li>
-    <li><button style="min-width: 3rem;">+</button> adds an "OR" word to make the description longer.</li>
-    <li><span style="cursor: pointer;" >&#10006;</span> removes an "OR" word to the description shorter.</li>
+    <li><button style="min-width: 3rem;">+</button> adds an "OR" word to make the description longer. You can add up to {MAX_NUM_BRANCHES-1} "OR"s.</li>
+    <li><span style="cursor: pointer;" >&#10006;</span> removes an "OR" word to make the description shorter.</li>
 </ul>
                 
 <p><b>The description's words, numbers, and length are scrambled at first, so please use the dropdowns and buttons to modify them into the correct description.</b></p>

@@ -33,8 +33,6 @@
     // Constants
     const dispatch = createEventDispatcher();  // for communicating with parent components
     const MAX_CLICKS = 10;  // total number of _unsuccessful_ continue clicks allowed on the comprehension checks / captchas before forcing the end of the experiment
-    const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVXYZ";  // for naming blicket machines (the names always aappear in alphabetical order while the order of the underlying forms are suffled between conditions)
-
     let checking_container;  // bind to div that contains the subpages
     let show_feedback = false;  // whether to show feedback on the current page
     
@@ -71,7 +69,7 @@
 
     // dynamically update whether participant can continue to next subpage
     $: can_cont = all_correct
-    // negative page numbers need all correct answers (for comprehension/captcha checks) while positive page numbers just need all questions to be answered (for teaching questions)
+    // negative page numbers need all correct answers (for practice/comprehension/captcha checks)
 
     // Click handler    
     async function cont() {
@@ -123,11 +121,8 @@
 
         <h3>Overview</h3>
         <ul>
-            <li>Our study lasts around {$duration_str} in total. You will see 7 sets of examples, each created by a teacher who wants to teach you how a "blicket machine" works.</li>
-            <!-- Notice bonus is only for length-1 questions because the last one is just "make your own rule" -->
-            <li><b>Your answers can earn a total bonus of up to {$bonus_currency_str}{roundMoney(student_bonus_val*7)}.</b>
-                <!-- TODO: bonus amount -->
-                <!-- Your answers are evaluated in detail by other people, so it may take some time to calculate your corresponding bonus. Your bonus will be sent within <b>{long_bonus_time}</b>. -->
+            <li>Our study lasts around {$duration_str} in total. You will see {Object.keys($quiz_data_dict).length} sets of examples, each created by a teacher who wants to teach you how a "blicket machine" works.</li>
+            <li><b>Your answers can earn a total bonus of up to {$bonus_currency_str}{roundMoney(student_bonus_val*Object.keys($quiz_data_dict).length)}. Your bonus will be sent within <b>{short_bonus_time}</b>.
             </li>
         </ul>
         
@@ -158,7 +153,7 @@
         <!-- will teach you how different blicket machines work (when the machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing) by showing you <b>{ordered_fform_keys.length} different sets of examples</b>. Each example set is created by a teacher, who may or may not be confident in knowing how the blicket machine works.</p> -->
 
         <h3>Learning from a Teacher</h3>
-        <p>In this study, a teacher wants to teach you about 7 blicket machines. For each machine, they have created an <b>example set</b> to show you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
+        <p>In this study, a teacher wants to teach you about {Object.keys($quiz_data_dict).length} blicket machines. For each machine, they have created an <b>example set</b> to show you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
         <p>In each example set, a teacher has created 5 examples to teach you about how a blicket machine works. For instance, you will see one example set that looks like:</p>
         <TeacherExampleSet collection_prefix="{Object.keys($quiz_data_dict)[0]}" />
 

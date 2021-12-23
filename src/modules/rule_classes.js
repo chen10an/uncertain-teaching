@@ -1,5 +1,7 @@
 import { getRandomEl } from './utilities.js';
 
+export const MAX_NUM_BRANCHES = 5;
+
 export const COMPARATORS = [
     {val: null, text: ""},
     {val: "=", text: "equal to"},

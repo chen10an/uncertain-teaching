@@ -4,12 +4,11 @@
     export let visible_branches;
     
     import Branch from './Branch.svelte';
-    import { Branch as BranchClass, makeRandomBranch } from '../../modules/rule_classes.js';
+    import { Branch as BranchClass, makeRandomBranch, MAX_NUM_BRANCHES } from '../../modules/rule_classes.js';
     import { flip } from 'svelte/animate';
     import { receive, send } from '../../modules/crossfade.js';
 
     const FLIP_DURATION_MS = 300;
-    const MAX_NUM_BRANCHES = 5;
 
     let visible_up_to = Math.max(Math.floor(Math.random() * MAX_NUM_BRANCHES), 1);  // random (noninclusive) end dex for selecting which branches are visible; first branch is always visible
     let visible_dex = [...Array(visible_up_to).keys()];
@@ -63,7 +62,7 @@
 <h4>Your Description:</h4>
 <p>The blicket machine activates...</p>
 {#each visible_dex as dex (dex)}
-    <div in:receive="{{key: ("rule_").concat(dex)}}" animate:flip="{{duration: FLIP_DURATION_MS}}" style="position: relative;"> 
+    <div in:receive="{{key: ("rule_").concat(dex)}}" animate:flip="{{duration: FLIP_DURATION_MS}}" style="position: relative;">
         {#if dex >= 1}
             <div id="remove" on:click="{() => removeBranch(dex)}">&#10006;</div>
             <div class="rule-unit" style="width: fit-content;">
