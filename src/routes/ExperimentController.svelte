@@ -43,7 +43,16 @@
     // populate quiz_data_dict based on the selected teacher for the current experimental condition; teacher's session_id is in condition_name
     quiz_data_dict.update(dict => {
         for (const collection_id in teacher_to_collection_to_ex[condition_name]) {
-            dict[collection_id] = {teaching_ex: teacher_to_collection_to_ex[condition_name][collection_id]};
+            if (collection_id === "participant_form") {
+                continue;
+            } else if (collection_id === "participant") {
+                dict[collection_id] = {
+                    teaching_ex: teacher_to_collection_to_ex[condition_name][collection_id],
+                    participant_form: teacher_to_collection_to_ex[condition_name]["participant_form"]
+                };
+            } else {
+                dict[collection_id] = {teaching_ex: teacher_to_collection_to_ex[condition_name][collection_id]};
+            }
         }
         return dict;
     });

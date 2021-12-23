@@ -1,7 +1,5 @@
 // this file specifies the experiment conditions as well as any one-off variables that are needed for a specific experiment version but will not necessarily generalize to future versions (e.g., long_bonus_time and teaching_bonus_val in 2.x.x)
 
-import { make_dummy_blicket, make_dummy_nonblicket } from '../modules/experiment_stores.js';
-
 export const short_bonus_time = "2 working days";  // max time for receiving auto-calculated bonus
 
 export const student_bonus_val = 0.15;
@@ -23,13 +21,19 @@ const teacher_to_collection_to_ex = {
         "conj3": "*** +, ** -, **** +, * -, ***... +",
         "noisy_disj": "* +, * +, * -, ** +, ... -",
         "conj": "** +, *** +, * -, **.. +, **** +",
-        "participant": "**. +, **.. -, *.. -, *** +, ***... -"
+        "participant": "**. +, **.. -, *.. -, *** +, ***... -",
+        "participant_form": "If there are more blickets than regular blocks, it activates"
     }
 }
 
 // turn each string into an example object with keys "blicket_nonblicket_combo" and "detector_state"
 for (const sess in teacher_to_collection_to_ex) {
     for (const coll in teacher_to_collection_to_ex[sess]) {
+        if (coll === "participant_form") {
+            // don't process this one
+            continue;
+        }
+        
         let str = teacher_to_collection_to_ex[sess][coll];
         let split_str = str.split(",").map(x => x.trim());
         
