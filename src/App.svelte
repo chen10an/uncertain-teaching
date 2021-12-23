@@ -44,14 +44,22 @@
 	  }
 
 	  routes["/test"] = wrap({
-		    component: TestComponent,
-		    conditions: [
-            // hack: use pre-condition to activate dev_mode
-            (detail) => {
-				        dev_mode.set(true);
-				        return dev_mode;
-            },
-        ]
+		    // component: TestComponent,
+        // 		    conditions: [
+        //     // hack: use pre-condition to activate dev_mode
+        //     (detail) => {
+        // 				        dev_mode.set(true);
+        // 				        return dev_mode;
+        //     },
+        // ]
+        component: ExperimentController,
+			  props: {
+				    component_sequence: ordered_seq[0],
+				    experiment_id: "uncertain_teaching_00x-dev",
+				    condition_name: ordered_sess[0],
+				    bonus_val_per_q: 0.15,
+				    set_dev_mode: true
+			  }
 	  });
 
     routes["/test2"] = wrap({
