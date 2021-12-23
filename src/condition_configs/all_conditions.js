@@ -12,17 +12,73 @@ export const qa_dict = {
     "teaching": {"question": `When you make a blicket machine description, the description's words, numbers, and length are scrambled at first, so your goal is to modify them into the correct description.`, "correct_answer": true},
 };
 
+// latin square used the teacher/micro experiment
+const row0 = ["disj", "noisy_conj", "conj3", "noisy_disj", "conj", "noisy_conj3", "participant"]
+const row1 = ["noisy_conj3", "disj", "noisy_conj", "conj3", "noisy_disj", "conj", "participant"]
+const row2 = ["conj", "noisy_conj3", "disj", "noisy_conj", "conj3", "noisy_disj", "participant"]
+const row3 = ["noisy_disj", "conj", "noisy_conj3", "disj", "noisy_conj", "conj3", "participant"]
+const row4 = ["conj3", "noisy_disj", "conj", "noisy_conj3", "disj", "noisy_conj", "participant"]
+const row5 = ["noisy_conj", "conj3", "noisy_disj", "conj", "noisy_conj3", "disj", "participant"]
+
+const teacher_to_order = {
+    "y048Xdw4VumCkDB5QKW8HQg0eTMOfxZN": row1,
+    "riTbSllW2xXpPjfBLEBnWgrBbKHUiBe3": row0,
+    "dIerBQJvFeIIG3UzvWRfGLJ9dpkL4Gqp": row1,
+    "cEAwScqcO063kmzLn12Env9oCHPf30jl": row3,
+    "YuhNX6Ux6MrxVGPyA4DBEbKAdEhdPGnB": row4
+};
+
 // OBS: there should only be one teacher/session id per condition so that the collection ids are unique within that condition
-const teacher_to_collection_to_ex = {
+let teacher_to_collection_to_ex = {
     "y048Xdw4VumCkDB5QKW8HQg0eTMOfxZN": {
-        "noisy_conj3": "**** +, *** +, *** -, ** -, * -",
-        "disj": "* +,	*** +, ***** +,	.. -,	...** +",
-        "noisy_conj": "** +, ** -, *** +, * -, ** +",
-        "conj3": "*** +, ** -, **** +, * -, ***... +",
-        "noisy_disj": "* +, * +, * -, ** +, ... -",
-        "conj": "** +, *** +, * -, **.. +, **** +",
-        "participant": "**. +, **.. -, *.. -, *** +, ***... -",
+        "noisy_conj3": "**** +,*** +,*** -,** -,* -",
+        "disj": "* +,	*** +,***** +,.. -,...** +",
+        "noisy_conj": "** +,** -,*** +,* -,** +",
+        "conj3": "*** +,** -,**** +,* -,***... +",
+        "noisy_disj": "* +,* +,* -,** +,... -",
+        "conj": "** +,*** +,* -,**.. +,**** +",
+        "participant": "**. +,**.. -,*.. -,*** +,***... -",
         "participant_form": "If there are more blickets than regular blocks, it activates"
+    },
+    "riTbSllW2xXpPjfBLEBnWgrBbKHUiBe3": {
+        "disj": "*..... +,...... -,**.... +,***... +,****.. +",
+        "noisy_conj": "***... +,**.... -,****** +,****.. +,*****. +",
+        "conj3": "...... -,....** -,*..... -,***... +,****** +",
+        "noisy_disj": "...... -,**.... +,*..... -,***... +,****.. +",
+        "conj": "**.... +,*..... -,***... +,...... -,****** +",
+        "noisy_conj3": "***... -,****.. +,*****. +,****** +,**.... -",
+        "participant": "**.... +,*..... +,...... -,***... -,****** -",
+        "participant_form": "Blinket Machine G works with maximum 2 blinkets."
+    },
+    "dIerBQJvFeIIG3UzvWRfGLJ9dpkL4Gqp": {
+        "noisy_conj3": "**** +,...* -,**.. -,*.*. -,.*** +",
+        "disj": "*** +,*.*. +,**.. +,* +,.... -",
+        "noisy_conj": "*** +,*.*.* +,***. +,.*.*.* +,**... -",
+        "conj3": "*** +,*.*.*. +,***. +,***** +,**..* +",
+        "noisy_disj": "*.. -,**.. +,*.*. +,..*.* +,..** +",
+        "conj": "** +,*.. -,..** +,.*.*.* +,**. +",
+        "participant": "*.*. +,.** +,..** +,.*.*. +,**** -",
+        "participant_form": "At least the machine has 2 blickets and 1 plain block is a must."
+    },
+    "cEAwScqcO063kmzLn12Env9oCHPf30jl": {
+        "noisy_disj": "* +,* -,** +,**.. +,**.... +",
+        "conj": "****** +,** +,*** +,**** +,***** +",
+        "noisy_conj3": "**** +,***** +,****** +,*** +,*** -",
+        "disj": "* +,** +,*** +,**** +,***** +",
+        "noisy_conj": "*** +,**** +,***** +,** -,** +",
+        "conj3": "*** +,**** +,***** +,****** +,** -",
+        "participant": "*. +,*.. -,**.. +,** -,***... +",
+        "participant_form": "Blicket machine G works with an equal number of blickets and plain blocks"
+    },
+    "YuhNX6Ux6MrxVGPyA4DBEbKAdEhdPGnB": {
+        "conj3": "***... +,**.... -,*..... -,****.. +,*****. +",
+        "noisy_disj": "* +,* -,** +,**.... +,****** +",
+        "conj": "* -,** +,**. +,***... +,****.. +",
+        "noisy_conj3": "***... +,***... -,****.. +,*..... -,**.... -",
+        "disj": "* +,** +,*** +,...... -,*..... +",
+        "noisy_conj": "** +,** -,*** +,***... +,****** +",
+        "participant": "** +,**** +,*** -,**.... +,****.. +",
+        "participant_form": "Blicket Machine G activates only when 2 or 4 blinkers are inside the machine. It doesn\'t matter if there are blocks inside or not."
     }
 }
 
@@ -36,6 +92,7 @@ for (const sess in teacher_to_collection_to_ex) {
         
         let str = teacher_to_collection_to_ex[sess][coll];
         let split_str = str.split(",").map(x => x.trim());
+        console.assert(split_str.length === 5);
         
         teacher_to_collection_to_ex[sess][coll] = split_str.map(x => {return {"blicket_nonblicket_combo": x.split(" ")[0], "detector_state": x.split(" ")[1] === "+"}});
     }
@@ -43,16 +100,33 @@ for (const sess in teacher_to_collection_to_ex) {
 
 export { teacher_to_collection_to_ex }
 
-export const sess0 = 'y048Xdw4VumCkDB5QKW8HQg0eTMOfxZN';
-export const seq0 = {
-    "PIS": {},
-    "IntroInstructions": {collection_id: "intro"},
-    "Quiz_0": {collection_id: "noisy_conj3", quiz_dex: 0},
-    "Quiz_1": {collection_id: "disj", quiz_dex: 1},
-    "Quiz_2": {collection_id: "noisy_conj", quiz_dex: 2},
-    "Quiz_3": {collection_id: "conj3", quiz_dex: 3},
-    "Quiz_4": {collection_id: "noisy_disj", quiz_dex: 4},
-    "Quiz_5": {collection_id: "conj", quiz_dex: 5},
-    "Quiz_6": {collection_id: "participant", quiz_dex: 6},
-    "End": {code_suffix: "0"}
+export const ordered_sess = ["y048Xdw4VumCkDB5QKW8HQg0eTMOfxZN", "riTbSllW2xXpPjfBLEBnWgrBbKHUiBe3", "dIerBQJvFeIIG3UzvWRfGLJ9dpkL4Gqp", "cEAwScqcO063kmzLn12Env9oCHPf30jl", "YuhNX6Ux6MrxVGPyA4DBEbKAdEhdPGnB"]
+
+let ordered_seq = [];
+for (let i=0; i < ordered_sess.length; i++) {
+    let ordered_collections = teacher_to_order[ordered_sess[i]];
+    let seq = {};
+    for (let j=0; j < ordered_collections.length; j++) {
+        let coll = ordered_collections[j];
+        
+        if (coll === "participant_form") {
+            continue;
+        }
+
+        seq[`Quiz_${j}`] = {collection_id: coll, quiz_dex: j};
+    }
+
+    let beg = {
+        "PIS": {},
+        "IntroInstructions": {collection_id: "intro"}
+    };
+    let end = {"End": {code_suffix: ""}};
+    
+    ordered_seq.push({
+        ...beg,
+        ...seq,
+        ...end
+    });
 }
+
+export { ordered_seq }

@@ -9,30 +9,23 @@
 	  import { bonus_currency_str, dev_mode } from './modules/experiment_stores.js';
 
 	  import {
-        sess0,
-        seq0
+        ordered_sess,
+        ordered_seq
     } from './condition_configs/all_conditions.js';
-
-
+    
 	  // configure the experiment conditions and bonuses
-	  const ALL_SEQ = [
-        seq0
-    ]
-	  const ALL_SEQ_NAMES = [
-        sess0
-    ];
 	  bonus_currency_str.set("£");
 
 	  // TODO: route that doesn't write data (can be turned on/off separately from dev mode)
 	  // create routes
 	  let routes = {};
-	  for (let i=0; i < ALL_SEQ.length; i++) {
+	  for (let i=0; i < ordered_sess.length; i++) {
 		    routes[`/conditions/${i}`] = wrap({
 			      component: ExperimentController,
 			      props: {
-				        component_sequence: ALL_SEQ[i],
+				        component_sequence: ordered_seq[i],
 				        experiment_id: "uncertain_teaching_00x",
-				        condition_name: ALL_SEQ_NAMES[i],
+				        condition_name: ordered_sess[i],
 				        bonus_val_per_q: 0.15,  // value for questions that can be scored automatically; there are only manual scoring questions in this experiment
 				        set_dev_mode: false
 			      }
@@ -41,9 +34,9 @@
 		    routes[`/dev/conditions/${i}`] = wrap({
 			      component: ExperimentController,
 			      props: {
-				        component_sequence: ALL_SEQ[i],
+				        component_sequence: ordered_seq[i],
 				        experiment_id: "uncertain_teaching_00x-dev",
-				        condition_name: ALL_SEQ_NAMES[i],
+				        condition_name: ordered_sess[i],
 				        bonus_val_per_q: 0.15,
 				        set_dev_mode: true
 			      }
