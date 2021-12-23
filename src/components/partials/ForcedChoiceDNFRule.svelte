@@ -63,7 +63,7 @@
 <h4>Your Description:</h4>
 <p>The blicket machine activates...</p>
 {#each visible_dex as dex (dex)}
-    <div in:receive="{{key: ("rule_").concat(dex)}}" out:send="{{key: ("rule_").concat(dex)}}" animate:flip="{{duration: FLIP_DURATION_MS}}" style="position: relative;"> 
+    <div in:receive="{{key: ("rule_").concat(dex)}}" animate:flip="{{duration: FLIP_DURATION_MS}}" style="position: relative;"> 
         {#if dex >= 1}
             <div id="remove" on:click="{() => removeBranch(dex)}">&#10006;</div>
             <div class="rule-unit" style="width: fit-content;">

@@ -2,22 +2,33 @@
     export let collection_id = "intro";
     
     import { dev_mode } from '../../modules/experiment_stores.js';
-    
     import { qa_dict, short_bonus_time, student_bonus_val } from '../../condition_configs/all_conditions.js';
-
     import CenteredCard from '../partials/CenteredCard.svelte';
     import CoolWarmCaptcha from '../partials/CoolWarmCaptcha.svelte';
     import WinnieThePooh from '../partials/WinnieThePooh.svelte';
     import Block from '../partials/Block.svelte';
-    import { FADE_DURATION_MS, FADE_IN_DELAY_MS, bonus_currency_str, make_dummy_blicket, make_dummy_nonblicket, intro_incorrect_clicks, MAX_NUM_BLOCKS, duration_str, feedback, quiz_data_dict } from '../../modules/experiment_stores.js';
+    import { FADE_DURATION_MS, FADE_IN_DELAY_MS, bonus_currency_str, make_dummy_blicket, make_dummy_nonblicket, intro_incorrect_clicks, MAX_NUM_BLOCKS, duration_str, quiz_data_dict } from '../../modules/experiment_stores.js';
     import TwoPilesAndDetector from '../partials/TwoPilesAndDetector.svelte';
     import TeacherExampleSet from '../partials/TeacherExampleSet.svelte';
-    import ForcedChoiceDNFRule from '../partials/ForcedChoiceDNFRule.svelte';
-
+    import PracticeRule from '../partials/PracticeRule.svelte';
     import { roundMoney } from '../../modules/utilities.js';
-
     import { fade } from 'svelte/transition';
     import { createEventDispatcher, tick } from 'svelte';
+
+    // set some default values for convenience during testing, but do this only in dev mode
+    if ($dev_mode) {
+        if (Object.keys($quiz_data_dict).length === 0) {
+            collection_id = "noisy_conj3";
+
+            quiz_data_dict.update(dict => {
+                dict[collection_id] = {
+                    teaching_ex: [{blicket_nonblicket_combo: "****", detector_state: true}, {blicket_nonblicket_combo: "***", detector_state: true}, {blicket_nonblicket_combo: "***", detector_state: false}, {blicket_nonblicket_combo: "**", detector_state: false}, {blicket_nonblicket_combo: "*", detector_state: false}]
+                };
+                return dict;
+            });
+        }
+    }
+
 
     // Constants
     const dispatch = createEventDispatcher();  // for communicating with parent components
@@ -31,8 +42,10 @@
     let page_dex = -3;  // multipage checks
     let all_correct = false;  // whether all understanding/captcha questions are correct on the current page
     let passed_captcha = false;  // bind to CoolWarmCaptcha
+    let passed_practice = false;  // bind to PracticeRule
     intro_incorrect_clicks.update(dict => {
         // initialize all possible keys for comprehension/captcha checks
+        dict["checking_page_-3"] = 0;
         dict["checking_page_-2"] = 0;
         dict["checking_page_-1"] = 0;
         return dict;
@@ -42,8 +55,7 @@
     $: {
         all_correct = true;  // start with true then flip to false depending on the checks below
         if (page_dex === -3) {
-            // TODO: 
-            all_correct = true;
+            all_correct = passed_practice;
         } else if (page_dex === -2) {
             for (const key in qa_dict) {
                 if (qa_dict[key].answer !== qa_dict[key].correct_answer) {
@@ -57,16 +69,13 @@
         }
     }
 
-    // Teaching examples
-    let rule_is_done = false;
-
     // dynamically update whether participant can continue to next subpage
-    $: can_cont = page_dex < 0 ? all_correct : rule_is_done 
+    $: can_cont = all_correct
     // negative page numbers need all correct answers (for comprehension/captcha checks) while positive page numbers just need all questions to be answered (for teaching questions)
 
     // Click handler    
     async function cont() {
-        if (page_dex === 0) {
+        if (can_cont && page_dex === -1) {
             dispatch("continue");
 
             if ($dev_mode) {
@@ -151,7 +160,7 @@
         <h3>Learning from a Teacher</h3>
         <p>In this study, a teacher wants to teach you about 7 blicket machines. For each machine, they have created an <b>example set</b> to show you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
         <p>In each example set, a teacher has created 5 examples to teach you about how a blicket machine works. For instance, you will see one example set that looks like:</p>
-        <p>TODO: "5 teaching examples that will appear in the study"</p>
+        <TeacherExampleSet collection_prefix="{Object.keys($quiz_data_dict)[0]}" />
 
         <p>In each example for this blicket machine, <b>the teacher has chosen</b> to put some blickets and/or plain blocks on the machine and show you whether the blicket machine should  <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response.</p>
         <p><b>Your goal</b> is to describe how this blicket machine works based on the teacher's 5 examples. You will have the chance to practice making a blicket machine description at the bottom of this page.</p>
@@ -163,20 +172,12 @@
             <h3 style="margin: 0">Checking Your Understanding (Part {4+page_dex}/3)</h3>
             <p style="margin: 0;">(This box is scrollable.)</p>
             <hr>
-            {#if page_dex == -3}
-                <p style="margin-bottom: 0;"><b>Please practice describing how the blicket machine works:</b> Let's say, after seeing the teacher's examples, you think the blicket machine always activates to exactly one blicket, no matter how many non-blickets are on the machine. Please describe this by using buttons and dropdowns:</p>
-                <ul style="list-style-type:none; margin-top: 0;">
-                    <li><button style="min-width: 3rem;">+</button> adds an "OR" word to make the description longer.</li>
-                    <li><span style="cursor: pointer;" >&#10006;</span> removes an "OR" word to the description shorter.</li>
-                    <li><select><option>Dropdowns</option></select> are used to choose words and numbers in the description.</li>
-                </ul>
-                
-                <p><b>The length, words and numbers in the description are scrambled at first, so please modify them into the correct description.</b></p>
-                <ForcedChoiceDNFRule/>
-                <p>TODO: validation of correctness of the participant's rule</p>
+            {#if page_dex === -3}
+                <PracticeRule bind:passed="{passed_practice}" />
                 <div class="button-container">
                     <button class="abs" on:click="{cont}">Continue</button>
                 </div>
+                <p class:hide={!show_feedback} class="wrong">Please make sure your description is complete (nothing is marked in red) and correct.</p>
             {:else if page_dex === -2}
                 <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}">
                     {#each Object.keys(qa_dict) as key}
@@ -186,12 +187,11 @@
                             <label><input type="radio" bind:group={qa_dict[key].answer} value={false}>False</label>
                         </div>
                     {/each}
+
+                <div class="button-container">
+                    <button class="abs" on:click="{cont}">Continue</button>
                 </div>
-                <div>
-                    <div class="button-container">
-                        <button class="abs" on:click="{cont}">Continue</button>
-                    </div>
-                    <p class:hide={!show_feedback} class="wrong">Not all answers are correct. Please try again.</p>
+                <p class:hide={!show_feedback} class="wrong">Not all answers are correct. Please try again.</p>
                 </div>
 
             {:else if page_dex === -1}

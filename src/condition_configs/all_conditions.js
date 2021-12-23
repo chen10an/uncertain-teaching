@@ -11,7 +11,7 @@ export const qa_dict = {
     "position": {"question": "When a blicket or plain block is on the blicket machine, its <em>position</em> can influence whether the machine activates.", "correct_answer": false},
     "same": {"question": "All of the teacher's example sets are about the same blicket machine.", "correct_answer": false},
     "confidence": {"question": "The teacher is always confident about how the machine works.", "correct_answer": false},
-    "teaching": {"question": `When you make a blicket machine description, the length, words and numbers in the description are scrambled at first, so your goal is to modify them into the correct description.`, "correct_answer": true},
+    "teaching": {"question": `When you make a blicket machine description, the description's words, numbers, and length are scrambled at first, so your goal is to modify them into the correct description.`, "correct_answer": true},
 };
 
 // OBS: there should only be one teacher/session id per condition so that the collection ids are unique within that condition

@@ -116,7 +116,7 @@
         <p style="margin-bottom: 0;">You will be able to submit after you have:</p>
         <ul style="margin: 0;">
             {#if !rule_is_done}
-                <li>completed your description. There should be no red dropdowns or text in your description.
+                <li>completed your description. Incomplete parts are marked in red.
             {/if}
             {#if !is_confident_is_done}
                 <li>answered whether the teacher is confident.</li>

@@ -27,7 +27,7 @@
 
 <div class="rule-unit">
     <span>
-        <select bind:value="{branch.reliability}" class:null="{branch.reliability === null}">
+        <select bind:value="{branch.reliability}" class:incomplete="{branch.reliability === null}">
             {#each RELIABILITIES as option}
                 <option value={option.val}>
                     {option.text}
@@ -39,7 +39,7 @@
     <div class="rule-unit">
         <span>
             the number of blickets <span style="display: inline-block;"><Block block={make_dummy_blicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span> is
-            <select bind:value="{branch.blicket_comparator}" class:null="{branch.blicket_comparator === null}">
+            <select bind:value="{branch.blicket_comparator}" class:incomplete="{branch.blicket_comparator === null | !under_max_blocks}">
                 {#each COMPARATORS as option}
                     <option value={option.val}>
                         {option.text}
@@ -47,7 +47,7 @@
                 {/each}
             </select>
             {#if branch.blicket_comparator != "any"}
-                <select bind:value="{branch.blicket_num}" class:null="{branch.blicket_num === null}">
+                <select bind:value="{branch.blicket_num}" class:incomplete="{branch.blicket_num === null | !under_max_blocks}">
                     {#each NUMBERS as option}
                         <option value={option.val}>
                             {option.text}
@@ -63,7 +63,7 @@
     <div class="rule-unit">
         <span>
             the number of plain (non-blicket) blocks <span style="display: inline-block;"><Block block={make_dummy_nonblicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span> is
-            <select bind:value="{branch.nonblicket_comparator}" class:null="{branch.nonblicket_comparator === null}">
+            <select bind:value="{branch.nonblicket_comparator}" class:incomplete="{branch.nonblicket_comparator === null | !under_max_blocks}">
                 {#each COMPARATORS as option}
                     <option value={option.val}>
                         {option.text}
@@ -71,7 +71,7 @@
                 {/each}
             </select>
             {#if branch.nonblicket_comparator != "any"}
-                <select bind:value="{branch.nonblicket_num}" class:null="{branch.nonblicket_num === null}">
+                <select bind:value="{branch.nonblicket_num}" class:incomplete="{branch.nonblicket_num === null | !under_max_blocks}">
                     {#each NUMBERS.slice(0, -1) as option}
                         <option value={option.val}>
                             {option.text}
@@ -93,7 +93,7 @@
         font-size: 16px;
     }
 
-    select.null {
+    select.incomplete {
         border-color: red;
     }
 </style>
