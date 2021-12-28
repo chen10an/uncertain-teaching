@@ -2,7 +2,7 @@
     export let collection_id = "intro";
     
     import { dev_mode } from '../../modules/experiment_stores.js';
-    import { qa_dict, short_bonus_time, student_bonus_val } from '../../condition_configs/all_conditions.js';
+    import { qa_dict, short_bonus_time, student_bonus_val, bonus_instructions } from '../../condition_configs/all_conditions.js';
     import CenteredCard from '../partials/CenteredCard.svelte';
     import CoolWarmCaptcha from '../partials/CoolWarmCaptcha.svelte';
     import WinnieThePooh from '../partials/WinnieThePooh.svelte';
@@ -117,12 +117,12 @@
     <div>
         <p style="color: red;"><b>Please do NOT reload the page. You will be unable to complete the study.</b></p>
         
-        <p>Welcome to our research study! We're interested in understanding how you learn about "blicket machines" from a teacher, and we hope that you have fun in the process.</p>
+        <p>Welcome to our research study! We're interested in understanding how you learn about a "blicket machine" from a teacher, and we hope that you have fun in the process.</p>
 
         <h3>Overview</h3>
         <ul>
-            <li>Our study lasts around {$duration_str} in total. You will see {Object.keys($quiz_data_dict).length} sets of examples, each created by a teacher who wants to teach you how a "blicket machine" works.</li>
-            <li><b>Your answers can earn a total bonus of up to {$bonus_currency_str}{roundMoney(student_bonus_val*Object.keys($quiz_data_dict).length)}. Your bonus will be sent within <b>{short_bonus_time}</b>.
+            <li>Our study lasts around {$duration_str} in total. For each of {Object.keys($quiz_data_dict).length} "blicket machines", a teacher has created examples to teach you how it works. Your goal is to explain how you think the machine works.</li>
+            <li><b>Your explanations can earn a total bonus of up to {$bonus_currency_str}{roundMoney(student_bonus_val*Object.keys($quiz_data_dict).length)}. Your bonus will be sent within <b>{short_bonus_time}</b>.
             </li>
         </ul>
         
@@ -148,18 +148,20 @@
             </ul>
         </div>
 
-        <p><b>Real blicket machines</b> will be able to respond to blickets and/or plain blocks by <span style="background: var(--active-color); padding: 0 0.3rem;">activating with a green color</span> or doing nothing. It doesn’t matter where blickets and/or plain blocks are placed on the machine.</p>
+        <p><b>Real blicket machines</b> will respond to blickets and/or plain blocks by <span style="background: var(--active-color); padding: 0 0.3rem;">activating with a green color</span> or doing nothing. It doesn’t matter where blickets and/or plain blocks are placed on the machine.</p>
         
         <!-- will teach you how different blicket machines work (when the machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing) by showing you <b>{ordered_fform_keys.length} different sets of examples</b>. Each example set is created by a teacher, who may or may not be confident in knowing how the blicket machine works.</p> -->
 
-        <h3>Learning from a Teacher</h3>
-        <p>In this study, a teacher wants to teach you about {Object.keys($quiz_data_dict).length} blicket machines. For each machine, they have created an <b>example set</b> to show you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
-        <p>In each example set, a teacher has created 5 examples to teach you about how a blicket machine works. For instance, you will see one example set that looks like:</p>
+        <h3>Learning about Blicket Machines from a Teacher</h3>
+        
+        <p>This study will show you <b>{Object.keys($quiz_data_dict).length} blicket machines</b>. For each machine, a teacher has created 5 examples to teach you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
+        <!-- In this study, a teacher wants to teach you about {Object.keys($quiz_data_dict).length} blicket machines. For each machine, they have created an <b>example set</b> to show you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works. -->
+        <p>For instance, one of the blicket machines in this study will be taught to you with 5 examples that look like:</p>
         <TeacherExampleSet collection_prefix="{Object.keys($quiz_data_dict)[0]}" />
 
-        <p>In each example for this blicket machine, <b>the teacher has chosen</b> to put some blickets and/or plain blocks on the machine and show you whether the blicket machine should  <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response.</p>
-        <p><b>Your goal</b> is to describe how this blicket machine works based on the teacher's 5 examples. You will have the chance to practice making a blicket machine description at the bottom of this page.</p>
-        <p><b>Your bonus</b> will be determined by whether other people, such as the teacher, think your description is representative of the teacher's examples (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} per example set). Your bonus will be sent within <b>within {short_bonus_time}</b>.</p>
+        <p>Here a <b>teacher</b> has created examples by putting some blickets and/or plain blocks on the blicket machine and choosing to show you whether the machine should  <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response.</p>
+        <p><b>Your goal</b> is to explain how you think this blicket machine works based on the teacher's examples. You will have the chance to practice making a blicket machine explanation at the bottom of this page.</p>
+        <p>{@html bonus_instructions} (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} per example set). Your bonus will be sent <b>within {short_bonus_time}</b>.</p>
         
         <div bind:this={checking_container} style="border-radius: var(--container-border-radius); box-shadow: var(--container-box-shadow); width=100%; height: 500px; overflow-y: scroll; padding: 10px; margin-top: 3rem;">
             
@@ -172,7 +174,7 @@
                 <div class="button-container">
                     <button class="abs" on:click="{cont}">Continue</button>
                 </div>
-                <p class:hide={!show_feedback} class="wrong">Please make sure your description is complete (nothing is marked in red) and correct.</p>
+                <p class:hide={!show_feedback} class="wrong">Please make sure your explanation is complete (nothing is marked in red) and correct.</p>
             {:else if page_dex === -2}
                 <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}">
                     {#each Object.keys(qa_dict) as key}

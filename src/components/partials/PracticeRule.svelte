@@ -34,13 +34,13 @@
                 
 </script>
 
-<p style="margin-bottom: 0;"><b>Please practice describing how the blicket machine works:</b> Suppose that, after seeing the teacher's examples, you think the blicket machine always activates when a single blicket and a single plain block are on the machine. Please describe this by using the dropdowns and buttons below:</p>
+<p style="margin-bottom: 0;"><b>Please practice explaining how the blicket machine works:</b> Suppose that, after seeing a teacher's examples, you think the blicket machine always activates when a single blicket and a single plain block are on the machine. Please explain this by using the dropdowns and buttons below:</p>
 <ul style="list-style-type:none;">
-    <li><select><option>Dropdowns</option></select> are used to choose words and numbers in the description.</li>
-    <li><button style="min-width: 3rem;">+</button> adds an "OR" word and makes the description longer. You can add up to {MAX_NUM_BRANCHES-1} "OR"s.</li>
-    <li><span style="cursor: pointer; color: var(--dark-gray);" >&#10006;</span> removes an "OR" word and makes the description shorter.</li>
+    <li><select><option>Dropdowns</option></select> are used to choose words and numbers in your explanation.</li>
+    <li><button style="min-width: 3rem;">+</button> adds an "OR" word and makes your explanation longer. You can add up to {MAX_NUM_BRANCHES-1} "OR"s.</li>
+    <li><span style="cursor: pointer; color: var(--dark-gray);" >&#10006;</span> removes an "OR" word and makes your explanation shorter.</li>
 </ul>
                 
-<p><b>The description's words, numbers, and length are scrambled at first, so please use the dropdowns and buttons to modify them into the correct description.</b></p>
+<p>Your explanation's words, numbers, and length are <b>scrambled</b> at first, so please use the dropdowns and buttons to modify them into the correct explanation.</p>
 <ForcedChoiceDNFRule bind:is_done="{rule_is_done}" bind:visible_branches="{visible_branches}" min_num_branches="{2}" />
 <!-- initialize with at least 2 branches so that the participant has to practice removing branches -->

@@ -2,14 +2,16 @@
     export let is_trouble = false;
     export let chunk_error = null;
 
-    import { short_bonus_time } from '../../condition_configs/all_conditions.js';   
+    import { short_bonus_time, student_bonus_val, end_bonus_instructions } from '../../condition_configs/all_conditions.js';
+    import { quiz_data_dict, bonus_currency_str } from '../../modules/experiment_stores.js';
+    import { roundMoney } from '../../modules/utilities.js';
     
     import CenteredCard from '../partials/CenteredCard.svelte';
 </script>
 
 {#if is_trouble}
     <CenteredCard has_button={false} is_large={true}>
-        <h3 style="color: red;">We're sorry that the study can no longer be completed. Please return this HIT, thank you.</h3>
+        <h3 style="color: red;">We're sorry that the study can no longer be completed. Please return this study, thank you.</h3>
 
         <p>This is because too many unsuccessful "continue"/"begin" button presses were attempted on the "checking your understanding" part of the instructions page. But please feel free to message us on Prolific or <a href="mailto:cocosci_support@mlist.is.ed.ac.uk">email us</a> if you feel we have mischaracterized your button presses and we will do our best to help you.</p>
     </CenteredCard>
@@ -24,7 +26,7 @@
 {:else}
     <CenteredCard has_button={false}>
         <h3 style="margin-bottom: 0">Thank you for participating!</h3>
-        <p>Your blicket machine descriptions will be shown to other people, such as the teacher, and your bonus will be determined by whether they think your descriptions are representative of the teacher's examples. Your bonus will be sent <b>within {short_bonus_time}</b>.</p>
+        <p>{@html end_bonus_instructions} (up to {$bonus_currency_str}{roundMoney(student_bonus_val*Object.keys($quiz_data_dict).length)} total bonus for the full study). Your bonus will be sent <b>within {short_bonus_time}</b>.</p>
         
         <p style="margin-top: 0;">To complete this Prolific study, <a href="https://app.prolific.co/submissions/complete?cc=2FA486A9" target="_blank">please click here</a>.</p>
         <img src="/images/thankyou.jpg" alt="dog biting a thank you card">

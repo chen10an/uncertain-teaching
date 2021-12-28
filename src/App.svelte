@@ -4,8 +4,7 @@
 
 	  import ExperimentController from './routes/ExperimentController.svelte';
 	  import TestComponent from './components/pages/IntroInstructions.svelte';
-	  import TestComponent2 from './components/pages/Quiz.svelte';
-    import IntroInstructions from './components/pages/IntroInstructions.svelte';
+	  import TestComponent2 from './components/pages/End.svelte';
 	  import { bonus_currency_str, dev_mode } from './modules/experiment_stores.js';
 
 	  import {
@@ -71,14 +70,6 @@
 				        return dev_mode;
             },
         ]
-	  });
-
-
-    routes["/demo"] = wrap({
-		    component: IntroInstructions,
-        props: {
-            ordered_fform_keys: ["disj", "conj", "conj3", "noisy_disj", "noisy_conj", "noisy_conj3"]
-			  }
 	  });
 
 	  // TODO: implement different wrapper component for different platforms: reddit sample size, mturk and prolific

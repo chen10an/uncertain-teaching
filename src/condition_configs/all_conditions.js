@@ -1,15 +1,16 @@
 // this file specifies the experiment conditions as well as any one-off variables that are needed for a specific experiment version but will not necessarily generalize to future versions (e.g., long_bonus_time and teaching_bonus_val in 2.x.x)
 
 export const short_bonus_time = "2 working days";  // max time for receiving auto-calculated bonus
-
 export const student_bonus_val = 0.15;
+export const bonus_instructions = "<b>Your bonus</b> will be determined by whether other people, such as the teacher, think your explanation accounts for the teacher's examples"
+export const end_bonus_instructions = "Your blicket machine explanations will now be shown to other people, such as a teacher, and your bonus will be determined by whether they think your explanations account for the teacher's examples"
 
 export const qa_dict = {
     "blicket": {"question": `Blickets are marked with a star, while plain blocks are not.`, "correct_answer": true},
+    "activation": {"question": `A teacher's examples will show the blicket machine's activation with a green color.`, "correct_answer": true},
     "position": {"question": "When a blicket or plain block is on the blicket machine, its <em>position</em> can influence whether the machine activates.", "correct_answer": false},
-    "same": {"question": "All of the teacher's example sets are about the same blicket machine.", "correct_answer": false},
     "confidence": {"question": "The teacher is always confident about how the machine works.", "correct_answer": false},
-    "teaching": {"question": `When you make a blicket machine description, the description's words, numbers, and length are scrambled at first, so your goal is to modify them into the correct description.`, "correct_answer": true},
+    "teaching": {"question": `When you make a blicket machine explanation, the words, numbers, and length are scrambled at first, so you will need to modify them.`, "correct_answer": true},
 };
 
 // latin square used the teacher/micro experiment

@@ -8,6 +8,7 @@
     export let max_quiz_dex = 6 // maximum dex
     
     import { quiz_data_dict } from '../../modules/experiment_stores.js';
+    import { bonus_instructions } from '../../condition_configs/all_conditions.js';
     
     // set some default values for convenience during testing, but do this only in dev mode
     if ($dev_mode) {
@@ -86,13 +87,13 @@
 <svelte:window bind:scrollY={scrollY}/>
 
 <CenteredCard is_large={true} has_button={false}>
-    <h2>Teacher's Example Set ({quiz_dex+1}/{max_quiz_dex+1}): Blicket Machine {machine_name}</h2>
+    <h2>Learning about Blicket Machine {machine_name} from a Teacher ({quiz_dex+1}/{max_quiz_dex+1})</h2>
         
     <TeacherExampleSet collection_prefix="{collection_id}" />
     <h3 style="margin-bottom: 0;">Based on the teacher's examples, how do you think blicket machine {machine_name} works?</h3>
 
-    <p style="margin-bottom: 0;">The description's words, numbers, and length are <b>scrambled</b> at first, so please modify them to describe how you think the blicket machine works.</p>
-    <p>Your <b>bonus</b> will be determined by whether other people, such as the teacher, think your description is representative of the teacher's examples (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} for this example set).</p>
+    <p style="margin-bottom: 0;">Please explain how you think blicket machine {machine_name} works. Your explanation's words, numbers, and length are <b>scrambled</b> at first, so you will need to modify them.</p>
+    <p>{@html bonus_instructions} (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} for this example set).</p>
     <ForcedChoiceDNFRule bind:is_done="{rule_is_done}" bind:visible_branches="{$quiz_data_dict[collection_id].rule}" />
     
     <h3 style="margin-bottom: 0;">Do you think the teacher is confident about knowing how blicket machine {machine_name} works?</h3>
@@ -103,7 +104,7 @@
                 
     {#if is_last}
         <h3 style="margin-bottom: 0;">Do you have any feedback for us? (Optional)</h3>
-        <p>We're at the end of the study and we're interested in hearing your thoughts! For example, how was it to learn from the teacher's examples? Or how was it to create blicket machine descriptions? Thank you in advance :)</p>
+        <p>We're at the end of the study and we're interested in hearing your thoughts! For example, how was it to learn from the teacher's examples? Or how was it to create blicket machine explanations? Thank you in advance :)</p>
         <textarea class:hide="{!is_last}" bind:value={$feedback}></textarea>
     {/if}
     <button on:click="{submit_answers}" disabled="{!answered_all}">
@@ -114,7 +115,7 @@
         <p style="margin-bottom: 0;">You will be able to submit after you have:</p>
         <ul style="margin: 0;">
             {#if !rule_is_done}
-                <li>completed your description. Incomplete parts are marked in red.
+                <li>completed your explanation. Incomplete parts are marked in red.
             {/if}
             {#if !is_confident_is_done}
                 <li>answered whether the teacher is confident.</li>

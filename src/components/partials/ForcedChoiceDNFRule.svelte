@@ -60,7 +60,7 @@
 </script>
 
 <div style="width: 100%;">
-<h4>Your Description:</h4>
+<h4>Your Explanation:</h4>
 <p>The blicket machine activates...</p>
 {#each visible_dex as dex (dex)}
     <div in:receive="{{key: ("rule_").concat(dex)}}" animate:flip="{{duration: FLIP_DURATION_MS}}" style="position: relative;">
