@@ -172,7 +172,7 @@
                 <div class="button-container">
                     <button class="abs" on:click="{cont}">Continue</button>
                 </div>
-                <p class:hide={!show_feedback} class="wrong">Please make sure your description is complete (nothing is marked in red) and <i>correct</i>.</p>
+                <p class:hide={!show_feedback} class="wrong">Please make sure your description is complete (nothing is marked in red) and correct.</p>
             {:else if page_dex === -2}
                 <div in:fade="{{delay: FADE_IN_DELAY_MS, duration: FADE_DURATION_MS}}">
                     {#each Object.keys(qa_dict) as key}

@@ -4,7 +4,7 @@
     import ForcedChoiceDNFRule from '../partials/ForcedChoiceDNFRule.svelte';
     import { Branch, MAX_NUM_BRANCHES } from '../../modules/rule_classes.js';
 
-    let correct_rule = [new Branch(1, "=", 1, "any", null)]
+    let correct_rule = [new Branch(1, "=", 1, "=", 1)]
     
     // to be bound by ForcedChoiceDNFRule
     let rule_is_done = false;
@@ -34,11 +34,11 @@
                 
 </script>
 
-<p style="margin-bottom: 0;"><b>Please practice describing how the blicket machine works:</b> Suppose that, after seeing the teacher's examples, you think the blicket machine always activates to exactly one blicket, no matter how many non-blickets are on the machine. Please describe this by using the dropdowns and buttons below:</p>
+<p style="margin-bottom: 0;"><b>Please practice describing how the blicket machine works:</b> Suppose that, after seeing the teacher's examples, you think the blicket machine always activates when a single blicket and a single plain block are on the machine. Please describe this by using the dropdowns and buttons below:</p>
 <ul style="list-style-type:none;">
     <li><select><option>Dropdowns</option></select> are used to choose words and numbers in the description.</li>
-    <li><button style="min-width: 3rem;">+</button> adds an "OR" word to make the description longer. You can add up to {MAX_NUM_BRANCHES-1} "OR"s.</li>
-    <li><span style="cursor: pointer; color: var(--dark-gray);" >&#10006;</span> removes an "OR" word to make the description shorter.</li>
+    <li><button style="min-width: 3rem;">+</button> adds an "OR" word and makes the description longer. You can add up to {MAX_NUM_BRANCHES-1} "OR"s.</li>
+    <li><span style="cursor: pointer; color: var(--dark-gray);" >&#10006;</span> removes an "OR" word and makes the description shorter.</li>
 </ul>
                 
 <p><b>The description's words, numbers, and length are scrambled at first, so please use the dropdowns and buttons to modify them into the correct description.</b></p>

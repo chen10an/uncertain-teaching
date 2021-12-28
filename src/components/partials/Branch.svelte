@@ -55,14 +55,7 @@
                     {/each}
                 </select>
             {/if}
-        </span>
-    </div>
-    <div class="rule-unit">
-        AND
-    </div>
-    <div class="rule-unit">
-        <span>
-            the number of plain (non-blicket) blocks <span style="display: inline-block;"><Block block={make_dummy_nonblicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span> is
+            and the number of plain (non-blicket) blocks <span style="display: inline-block;"><Block block={make_dummy_nonblicket(-1, -1)} is_mini={true} use_transitions="{false}" is_disabled="{true}" /></span> is
             <select bind:value="{branch.nonblicket_comparator}" class:incomplete="{branch.nonblicket_comparator === null | !under_max_blocks}">
                 {#each COMPARATORS as option}
                     <option value={option.val}>
