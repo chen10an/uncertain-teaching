@@ -150,7 +150,7 @@
 
         <p><b>Real blicket machines</b> will respond to blickets and/or plain blocks by <span style="background: var(--active-color); padding: 0 0.3rem;">activating with a green color</span> or doing nothing. It doesn’t matter where blickets and/or plain blocks are placed on the machine.</p>
 
-        <h3>Learning about Blicket Machines from a Teacher</h3>
+        <h3>Learning about a Blicket Machine from a Teacher</h3>
         
         <p>This study will show you <b>{Object.keys($quiz_data_dict).length} blicket machines</b>. For each machine, a teacher has created 5 examples to teach you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
         <p>For instance, one of the blicket machines in this study will be taught to you with 5 examples that look like:</p>
