@@ -2,15 +2,16 @@
     // bind in parent:
     export let is_done;
     export let visible_branches;
+    export let min_num_branches = 1;  // minimum number of visible branches after random initialization
     
     import Branch from './Branch.svelte';
     import { Branch as BranchClass, makeRandomBranch, MAX_NUM_BRANCHES } from '../../modules/rule_classes.js';
     import { flip } from 'svelte/animate';
-    import { receive, send } from '../../modules/crossfade.js';
+    import { receive } from '../../modules/crossfade.js';
 
     const FLIP_DURATION_MS = 300;
 
-    let visible_up_to = Math.max(Math.floor(Math.random() * MAX_NUM_BRANCHES), 1);  // random (noninclusive) end dex for selecting which branches are visible; first branch is always visible
+    let visible_up_to = Math.floor(Math.random() * (MAX_NUM_BRANCHES - min_num_branches) + min_num_branches);  // random (noninclusive) end dex for selecting which branches are visible; first branch is always visible
     let visible_dex = [...Array(visible_up_to).keys()];
 
     // define a fixed order/index to help transitions/animations target the correct branch

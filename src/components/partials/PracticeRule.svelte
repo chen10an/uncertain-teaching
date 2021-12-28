@@ -42,4 +42,5 @@
 </ul>
                 
 <p><b>The description's words, numbers, and length are scrambled at first, so please use the dropdowns and buttons to modify them into the correct description.</b></p>
-<ForcedChoiceDNFRule bind:is_done="{rule_is_done}" bind:visible_branches="{visible_branches}" />
+<ForcedChoiceDNFRule bind:is_done="{rule_is_done}" bind:visible_branches="{visible_branches}" min_num_branches="{2}" />
+<!-- initialize with at least 2 branches so that the participant has to practice removing branches -->
