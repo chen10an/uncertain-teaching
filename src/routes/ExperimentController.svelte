@@ -36,7 +36,7 @@
 	  import { cubicOut } from 'svelte/easing';
 
 	  import { location, querystring } from 'svelte-spa-router';
-
+    
 	  dev_mode.set(set_dev_mode);
 	  bonus_val.set(bonus_val_per_q);
 
@@ -103,34 +103,37 @@
 				        // show loading page
 				        current_component = Loading;
 				        current_props = {};
-			      } else if (chunksLeft === 0) {  // all chunks have been sent
-				                                 if (wait_for_chunks_interval !== null) {  // override any waiting
-					                                   clearInterval(wait_for_chunks_interval);
-				                                 }
-				                                 // continue with showing the component that is supposed to come next
-				                                 current_component = str_to_component[next_key.split("_")[0]];
-				                                 current_props = next_props;
-				                                 scrollY = 0; // make sure to start each component at the top of the window
-
-				                                 // reset waiting
-				                                 wait_for_chunks_interval = null;
-				                                 waited_for_chunks_ms = 0;
-			                                   }
+			      } else if (chunksLeft === 0) {
+                // all chunks have been sent
+				        if (wait_for_chunks_interval !== null) {
+                    // override any waiting
+					          clearInterval(wait_for_chunks_interval);
+				        }
+				        // continue with showing the component that is supposed to come next
+				        current_component = str_to_component[next_key.split("_")[0]];
+				        current_props = next_props;
+				        scrollY = 0; // make sure to start each component at the top of the window
+                
+				        // reset waiting
+				        wait_for_chunks_interval = null;
+				        waited_for_chunks_ms = 0;
+			      }
 		    },
 		    (e) => {}
 		    // **remove this error handling for now to allow for unstable internet between messages**
 		    // (but note that the message callback does have its own error handling)
 		    // TODO: instead of removing, consider counting errors before sending participant to the error page
-
-		    // 	if (wait_for_chunks_interval !== null) {  // override any waiting
-		                                               // 		clearInterval(wait_for_chunks_interval);
-		                                               // 	}
-
+        
+		    // 	if (wait_for_chunks_interval !== null) {
+        // override any waiting
+		    // 		clearInterval(wait_for_chunks_interval);
+		    // 	}
+        
 		    // 	current_component = End;
 		    // 	current_props = {chunk_error: JSON.stringify(e)};
 		    // }
 	  );
-
+    
 	  onDestroy(() => {
 		    // reset store values and close the websocket whenever an instance of this component gets destroyed
 		    reset_experiment_stores();
@@ -173,14 +176,15 @@
 
 	  if (!$dev_mode) {
 		    // use local storage to prevent repeated visits to the experiment website
-		    if (localStorage.getItem("visited")) {  // true and not null
-			                                       current_component = DontRepeat;
-			                                       current_props = {};
-		                                         } else {
-			                                           localStorage.setItem("visited", true);
-		                                         }
+		    if (localStorage.getItem("visited")) {
+            // true and not null
+			      current_component = DontRepeat;
+			      current_props = {};
+		    } else {
+			      localStorage.setItem("visited", true);
+		    }
 	  }
-
+    
 	  function handleContinue(event) {
 		    if (event.detail && event.detail.trouble) {
             // force the end of the experiment
@@ -214,12 +218,8 @@
 					          is_trouble: is_trouble,
 					          honeypot_responses: $honeypot_responses,
 					          intro_incorrect_clicks: $intro_incorrect_clicks,
-					          score: $current_score,
-					          max_score: $max_score,
 					          bonus_per_q: $bonus_val,
-					          total_bonus: $current_total_bonus,
 					          feedback: $feedback,
-					          task_data: $task_data_dict,
 					          quiz_data: $quiz_data_dict,
 					          blocks: $to_store_block_dict
 				        };
