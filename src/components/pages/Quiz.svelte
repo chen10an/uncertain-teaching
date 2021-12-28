@@ -94,7 +94,7 @@
     <h3 style="margin-bottom: 0;">Based on the teacher's examples, how do you think blicket machine {machine_name} works?</h3>
 
     <p style="margin-bottom: 0;">Please explain how you think blicket machine {machine_name} works. Your explanation's words, numbers, and length are <b>scrambled</b> at first, so you will need to modify them.</p>
-    <p>{@html bonus_instructions} (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} for this example set).</p>
+    <p>{@html bonus_instructions} (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} for this blicket machine).</p>
     <ForcedChoiceDNFRule bind:is_done="{rule_is_done}" bind:visible_branches="{$quiz_data_dict[collection_id].rule}" />
     
     <h3 style="margin-bottom: 0;">Do you think the teacher is confident about knowing how blicket machine {machine_name} works?</h3>

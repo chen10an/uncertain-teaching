@@ -149,19 +149,16 @@
         </div>
 
         <p><b>Real blicket machines</b> will respond to blickets and/or plain blocks by <span style="background: var(--active-color); padding: 0 0.3rem;">activating with a green color</span> or doing nothing. It doesn’t matter where blickets and/or plain blocks are placed on the machine.</p>
-        
-        <!-- will teach you how different blicket machines work (when the machine <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing) by showing you <b>{ordered_fform_keys.length} different sets of examples</b>. Each example set is created by a teacher, who may or may not be confident in knowing how the blicket machine works.</p> -->
 
         <h3>Learning about Blicket Machines from a Teacher</h3>
         
         <p>This study will show you <b>{Object.keys($quiz_data_dict).length} blicket machines</b>. For each machine, a teacher has created 5 examples to teach you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works.</p>
-        <!-- In this study, a teacher wants to teach you about {Object.keys($quiz_data_dict).length} blicket machines. For each machine, they have created an <b>example set</b> to show you how it works: when it <span style="background: var(--active-color); padding: 0 0.3rem;">activates</span> and when it does nothing. The teacher may or may not be confident in knowing how the machine works. -->
         <p>For instance, one of the blicket machines in this study will be taught to you with 5 examples that look like:</p>
         <TeacherExampleSet collection_prefix="{Object.keys($quiz_data_dict)[0]}" />
 
         <p>Here a <b>teacher</b> has created examples by putting some blickets and/or plain blocks on the blicket machine and choosing to show you whether the machine should  <span style="background: var(--active-color); padding: 0 0.3rem;">Activate</span> or "Do Nothing" in response.</p>
         <p><b>Your goal</b> is to explain how you think this blicket machine works based on the teacher's examples. You will have the chance to practice making a blicket machine explanation at the bottom of this page.</p>
-        <p>{@html bonus_instructions} (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} per example set). Your bonus will be sent <b>within {short_bonus_time}</b>.</p>
+        <p>{@html bonus_instructions} (up to {$bonus_currency_str}{roundMoney(student_bonus_val)} per blicket machine). Your bonus will be sent <b>within {short_bonus_time}</b>.</p>
         
         <div bind:this={checking_container} style="border-radius: var(--container-border-radius); box-shadow: var(--container-box-shadow); width=100%; height: 500px; overflow-y: scroll; padding: 10px; margin-top: 3rem;">
             
