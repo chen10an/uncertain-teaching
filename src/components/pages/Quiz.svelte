@@ -89,6 +89,7 @@
 <CenteredCard is_large={true} has_button={false}>
     <h2>Learning about Blicket Machine {machine_name} from a Teacher ({quiz_dex+1}/{max_quiz_dex+1})</h2>
         
+    <h3>A Teacher's Examples of Blicket Machine {machine_name}:</h3>
     <TeacherExampleSet collection_prefix="{collection_id}" />
     <h3 style="margin-bottom: 0;">Based on the teacher's examples, how do you think blicket machine {machine_name} works?</h3>
 
@@ -104,7 +105,7 @@
                 
     {#if is_last}
         <h3 style="margin-bottom: 0;">Do you have any feedback for us? (Optional)</h3>
-        <p>We're at the end of the study and we're interested in hearing your thoughts! For example, how was it to learn from the teacher's examples? Or how was it to create blicket machine explanations? Thank you in advance :)</p>
+        <p>We're at the end of the study and we're interested in hearing your thoughts! For example, how was it to learn from the teacher's examples? Or how was it to make blicket machine explanations? Thank you in advance :)</p>
         <textarea class:hide="{!is_last}" bind:value={$feedback}></textarea>
     {/if}
     <button on:click="{submit_answers}" disabled="{!answered_all}">
